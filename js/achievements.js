@@ -51,6 +51,21 @@ addLayer("a", {
             done() { return player.c.points.gte(1) },
             tooltip: "You have ignited the flame of mana.",
         },
+        16: {
+            name: "Spreading flame I",
+            done() { return player.c.points.gte(2) },
+            tooltip: "The path keeps widening",
+        },
+        17: {
+            name: "Spreading flame II",
+            done() { return player.c.points.gte(3) },
+            tooltip: "The path keeps widening",
+        },
+        18: {
+            name: "Read a book",
+            done() { return player.t.upgrades.include("31", "32", "33") },
+            tooltip: "Sound mind in sound body",
+        },
     },
     clickables: {
         11: {

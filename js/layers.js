@@ -25,6 +25,7 @@ addLayer("d", {
         if (hasUpgrade("d", 13)) mult = mult.times(upgradeEffect("d", 13))
         if (hasUpgrade("d", 23)) mult = mult.times(upgradeEffect("d", 23))
         if (hasUpgrade("d", 32)) mult = mult.times(upgradeEffect("d", 32))
+        if (hasUpgrade("b", 12)) mult = mult.times(upgradeEffect("b", 12))
 
         return mult
     },
@@ -228,8 +229,24 @@ addLayer("t", {
             title: "Spirit Stone x5",
             cost: new Decimal(400),
             amount: new Decimal(5),
-            display() { return "Purchase ten spirit stones.<br>Cost: "+format(this.cost)+" mana" },
+            display() { return "Purchase five spirit stones.<br>Cost: "+format(this.cost)+" mana" },
             unlocked() { return hasUpgrade("d", "25") },
+            canClick() { return player.points.gte(this.cost) },
+            onClick() {
+                let cost = this.cost
+                if (player.points.gte(cost)) {
+                    player.points = player.points.sub(cost)
+                    player[this.layer].points = player[this.layer].points.add(this.amount)
+                    player[this.layer].total = player[this.layer].points.add(this.amount)
+                }
+            },
+        },
+        13: {
+            title: "Spirit Stone x10",
+            cost: new Decimal(800),
+            amount: new Decimal(10),
+            display() { return "Purchase ten spirit stones.<br>Cost: " + format(this.cost) + " mana" },
+            unlocked() { return player.c.milestones.includes("1") },
             canClick() { return player.points.gte(this.cost) },
             onClick() {
                 let cost = this.cost
@@ -285,13 +302,47 @@ addLayer("t", {
             effectDisplay() { return format(this.effect())+"x mana gain" },
             unlocked() { return hasUpgrade("d", "25") || player.c.milestones.includes("0") },
         },
+        31: {
+            title: "Body Tempering Manual",
+            description: "Explains the Five Fiery Demon Hounds method",
+            cost()
+            {
+                let cost = new Decimal(150)
+                if (hasUpgrade("t", "32")) cost = cost.times(2)
+                if (hasUpgrade("t", "33")) cost = cost.times(2)
+                return new Decimal(150)
+            },
+            unlocked() { player.c.milestones.includes("1") },
+        },
+        32: {
+            title: "Body Tempering Manual",
+            description: "Explains the Placid Lake, Sun and Moon Reflected method",
+            cost() {
+                let cost = new Decimal(150)
+                if (hasUpgrade("t", "31")) cost = cost.times(2)
+                if (hasUpgrade("t", "33")) cost = cost.times(2)
+                return new Decimal(150)
+            },
+            unlocked() { player.c.milestones.includes("1") },
+        },
+        33: {
+            title: "Body Tempering Manual",
+            description: "Explains the method of Jin Ro, the Blood Flower",
+            cost() {
+                let cost = new Decimal(150)
+                if (hasUpgrade("t", "31")) cost = cost.times(2)
+                if (hasUpgrade("t", "32")) cost = cost.times(2)
+                return new Decimal(150)
+            },
+            unlocked() { player.c.milestones.includes("1") },
+        },
     },
-    layerShown() { return hasUpgrade("d", "15") || player.a.achievements.includes("13") }, // Show the layer if you have at least 5 point
+    layerShown() { return hasUpgrade("d", "15") || player.a.achievements.includes("13") },
     doReset(resettingLayer) {
         if (layers[resettingLayer].row <= this.row) return;
         let keep = [];
-        if (resettingLayer = "c") {
-            if (hasMilestone("c", 0)) keep.push("upgrades");
+        if (hasMilestone("c", 0) && layers[resettingLayer].row == player.c.row) { //core, body, meridans
+            keep.push("upgrades");
         }
         layerDataReset(this.layer, keep);
     }
@@ -312,7 +363,7 @@ addLayer("c", {
     }, // Can be a function that takes requirement increases into account
     effect() { return new Decimal(2).pow(player[this.layer].points) },
     effectDescription() { return "which multiplies mana gain and cap by "+format(this.effect()) },
-    resource: "core layers", // Name of prestige currency
+    resource: "★ core", // Name of prestige currency
     baseResource: "droplets of mana", // Name of resource prestige is based on
     baseAmount() {return player.d.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
@@ -323,18 +374,159 @@ addLayer("c", {
     layerShown(){ return hasUpgrade("d", 35) || player.a.achievements.includes("15") }, // Show the layer if you have at least 5 point
     milestones: {
         0: {
-            requirementDescription: "1 core layer",
+            requirementDescription: "1★ core",
             effectDescription: "Keep all travel upgrades on reset.",
             done() { return player[this.layer].points.gte(1) },
             effect() { return new Decimal(1) },
             unlocked() { return true },
         },
         1: {
-            requirementDescription: "2 core layers",
-            effectDescription: "Unlock Condensed Mana. Not Implemented yet.",
+            requirementDescription: "2★ core",
+            effectDescription: "Unlock Body Tempering and new Travel upgrades.",
             done() { return player[this.layer].points.gte(2) },
             effect() { return new Decimal(1) },
             unlocked() { return true },
         },
+        2: {
+            requirementDescription: "3★ core",
+            effectDescription: "Unlock Core Meridans - Not Implemented",
+            done() { return player[this.layer].points.gte(3) },
+            effect() { return new Decimal(1) },
+            unlocked() { return true },
+        },
     },
+})
+addLayer("b", {
+    name: "body", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "💪", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false, // Whether the layer is unlocked
+        points: new Decimal(0),
+        lifeForce: new Decimal(0),
+    }},
+    color: "#f2f2ae",
+    requires() { return new Decimal(400000) }, // Can be a function that takes requirement increases into account
+    effect() { return new Decimal(2).pow(player[this.layer].points.sub(1)) },
+    effectDescription() { return format(this.lifeForce) + " total life force, and are producing " + format(this.effect()) + " life force per second" },
+    update(diff) { // Called every tick, to update the layer
+        if (player[this.layer].points.gte(1)) {
+            let gain = this.effect()
+            if (hasUpgrade("b", 11)) gain = gain.times(upgradeEffect("b", 11))
+
+            player[this.layer].lifeForce = player[this.layer].lifeForce.add(gain.times(diff))
+        }
+    },
+    resource: "★ body", // Name of prestige currency
+    baseResource: "droplets of mana", // Name of resource prestige is based on
+    baseAmount() {return player.d.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 1.5, // Prestige currency exponent
+    base: 0.5, // Base for the cost calculation
+    row: 1, // Row the layer is in on the tree (0 is the first row)
+    branches: ["c"], // This layer is a branch of the core layer
+    layerShown() { return player.c.milestones.includes("1") || player.a.achievements.includes("16") }, // Show the layer if you have at least 5 point
+    upgrades: {
+        11: {
+            title: "Exercise",
+            description: "Increase life force gain by mana",
+            cost() { return new Decimal(10) },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            effect() {
+                let effect = player.points.add(1).log10().times(0.1).add(1)
+                return softcap(effect, new Decimal(5.0), 0.3)
+            },
+            effectDisplay() { return format(this.effect())+"x life force" },
+            unlocked() { return true },
+        },
+        12: {
+            title: "Weight Training",
+            description: "Increase droplet gain by 5% per ★.",
+            cost() { return new Decimal(20) },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            effect() {
+                let effect = new Decimal(0.05).times(player[this.layer].points).add(1)
+                return softcap(effect, new Decimal(2.5), 0.3)
+            },
+            effectDisplay() { return format(this.effect()) + "x droplet gain" },
+            unlocked() { return true },
+        },
+        13: {
+            title: "Sparring",
+            description: "Increase mana capacity by 3% per ★.",
+            cost() { return new Decimal(30) },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            effect() {
+                let effect = new Decimal(0.03).times(player[this.layer].points).add(1)
+                return softcap(effect, new Decimal(2.5), 0.3)
+            },
+            effectDisplay() { return format(this.effect()) + "x mana capacity" },
+            unlocked() { return true },
+        },
+        //Five Fiery Demon Hounds method
+        21: {
+            title: "Bed of hot coals",
+            description: "Increase mana gain by 5% per ★.",
+            cost() { return new Decimal(1000) },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            effect() {
+                let effect = new Decimal(0.05).times(player[this.layer].points).add(1)
+                return softcap(effect, new Decimal(2.5), 0.3)
+            },
+            effectDisplay() { return format(this.effect()) + "x mana gain" },
+            unlocked() { return hasUpgrade("t", 31) },
+        },
+        //Placid Lake, Sun and Moon Reflected method
+        31: {
+            title: "Mediate in a freezing lake",
+            description: "TODO",
+            cost() { return new Decimal(1100) },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            effect() {
+                let effect = new Decimal(1.5)
+                return effect
+            },
+            effectDisplay() { return format(this.effect()) + "x mana cap" },
+            unlocked() { return hasUpgrade("t", 32) },
+        },
+        //Jin Ro, the Blood Flower
+        41: {
+            title: "Planting the blade",
+            description: "TODO",
+            cost() { return new Decimal(1200) },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            effect() {
+                let effect = new Decimal(1.5)
+                return effect
+            },
+            effectDisplay() { return format(this.effect()) + "x mana cap" },
+            unlocked() { return hasUpgrade("t", 33) },
+        },
+        51: {
+            title: "Synthesis",
+            description: "TODO",
+            cost() { return new Decimal(10000) },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            effect() {
+                let effect = new Decimal(1.5)
+                return effect
+            },
+            effectDisplay() { return format(this.effect()) + "x mana cap" },
+            unlocked() { return player.t.upgrades.includes("31","32", "33") },
+        },
+    }
 })
