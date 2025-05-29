@@ -63,7 +63,7 @@ addLayer("a", {
         },
         18: {
             name: "Read a book",
-            done() { return player.t.upgrades.include("31", "32", "33") },
+            done() { return player.t.upgrades.includes("31", "32", "33") },
             tooltip: "Sound mind in sound body",
         },
     },

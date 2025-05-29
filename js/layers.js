@@ -363,7 +363,7 @@ addLayer("c", {
     }, // Can be a function that takes requirement increases into account
     effect() { return new Decimal(2).pow(player[this.layer].points) },
     effectDescription() { return "which multiplies mana gain and cap by "+format(this.effect()) },
-    resource: "★ core", // Name of prestige currency
+    resource: "core ★", // Name of prestige currency
     baseResource: "droplets of mana", // Name of resource prestige is based on
     baseAmount() {return player.d.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
@@ -407,8 +407,11 @@ addLayer("b", {
     }},
     color: "#f2f2ae",
     requires() { return new Decimal(400000) }, // Can be a function that takes requirement increases into account
-    effect() { return new Decimal(2).pow(player[this.layer].points.sub(1)) },
-    effectDescription() { return format(this.lifeForce) + " total life force, and are producing " + format(this.effect()) + " life force per second" },
+    effect() { 
+        if (player[this.layer].points.lt(1)) return new Decimal(0)
+        return new Decimal(2).pow(player[this.layer].points.sub(1))
+     },
+    effectDescription() { return format(player.b.lifeForce) + " total life force, and are producing " + format(this.effect()) + " life force per second" },
     update(diff) { // Called every tick, to update the layer
         if (player[this.layer].points.gte(1)) {
             let gain = this.effect()
@@ -417,7 +420,7 @@ addLayer("b", {
             player[this.layer].lifeForce = player[this.layer].lifeForce.add(gain.times(diff))
         }
     },
-    resource: "★ body", // Name of prestige currency
+    resource: "body ★", // Name of prestige currency
     baseResource: "droplets of mana", // Name of resource prestige is based on
     baseAmount() {return player.d.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
@@ -430,7 +433,7 @@ addLayer("b", {
         11: {
             title: "Exercise",
             description: "Increase life force gain by mana",
-            cost() { return new Decimal(10) },
+            cost() { return new Decimal(100) },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
@@ -444,7 +447,7 @@ addLayer("b", {
         12: {
             title: "Weight Training",
             description: "Increase droplet gain by 5% per ★.",
-            cost() { return new Decimal(20) },
+            cost() { return new Decimal(200) },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
@@ -458,7 +461,7 @@ addLayer("b", {
         13: {
             title: "Sparring",
             description: "Increase mana capacity by 3% per ★.",
-            cost() { return new Decimal(30) },
+            cost() { return new Decimal(300) },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",

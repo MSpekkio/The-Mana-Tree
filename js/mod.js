@@ -55,7 +55,7 @@ function getPointGen() {
 	if (hasUpgrade("t", 22)) gain = gain.times(upgradeEffect("t", 22))
 	if (hasUpgrade("d", 33)) gain = gain.times(upgradeEffect("d", 33))
 	if (player.c.points.gte(1)) gain = gain.times(tmp.c.effect)
-    if (hasUpgrade("b", 11)) gain = gain.times(upgradeEffect("b", 11))))
+    if (hasUpgrade("b", 11)) gain = gain.times(upgradeEffect("b", 11))
 	
 
 	let cap = new Decimal(100)
