@@ -145,7 +145,10 @@ addLayer("d", {
             cost: new Decimal(1500),
             unlocked() { return hasUpgrade("t", "21") },
             effect() { 
-                let effect = player[this.layer].points.add(1).log10().times(0.22).add(1)
+                let base = new Decimal(0.22)
+                if (hasUpgrade("b", "32")) base = base.add(upgradeEffect("b", 32))
+
+                let effect = player[this.layer].points.add(1).log10().times(base).add(1)
                 return softcap(effect, new Decimal(5.0), new Decimal(0.3))
             },
             effectDisplay() { return format(this.effect())+"x" }
@@ -191,7 +194,7 @@ addLayer("d", {
 })
 addLayer("t", {
     name: "travel", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "🚶🏼‍♂️", // This appears on the layer's node. Default is the id with the first letter capitalized
+    symbol: "🚶🏼‍", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     type: "none",
     startData() { return {
@@ -304,7 +307,7 @@ addLayer("t", {
         },
         31: {
             title: "Body Tempering Manual",
-            description: "Explains the Five Fiery Demon Hounds method",
+            description: "Explains the 'Five Fiery Demon Hounds' method",
             cost()
             {
                 let cost = new Decimal(150)
@@ -316,7 +319,7 @@ addLayer("t", {
         },
         32: {
             title: "Body Tempering Manual",
-            description: "Explains the Placid Lake, Sun and Moon Reflected method",
+            description: "Explains the 'Placid Lake, Sun and Moon Reflected' method",
             cost() {
                 let cost = new Decimal(150)
                 if (hasUpgrade("t", "31")) cost = cost.times(2)
@@ -327,7 +330,7 @@ addLayer("t", {
         },
         33: {
             title: "Body Tempering Manual",
-            description: "Explains the method of Jin Ro, the Blood Flower",
+            description: "Explains the method of 'Jin Ro, the Blood Flower'",
             cost() {
                 let cost = new Decimal(150)
                 if (hasUpgrade("t", "31")) cost = cost.times(2)
@@ -438,7 +441,7 @@ addLayer("b", {
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
             effect() {
-                let effect = player.points.add(1).log10().times(0.1).add(1)
+                let effect = player.points.add(1).log10().times(0.06).add(1)
                 return softcap(effect, new Decimal(5.0), 0.3)
             },
             effectDisplay() { return format(this.effect())+"x life force" },
@@ -446,30 +449,30 @@ addLayer("b", {
         },
         12: {
             title: "Weight Training",
-            description: "Increase droplet gain by 5% per ★.",
+            description: "Increase life force gain by ★s.",
             cost() { return new Decimal(200) },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
             effect() {
-                let effect = new Decimal(0.05).times(player[this.layer].points).add(1)
-                return softcap(effect, new Decimal(2.5), 0.3)
+                let effect = player.c.points.add(player.b.points)
+                return effect
             },
-            effectDisplay() { return format(this.effect()) + "x droplet gain" },
+            effectDisplay() { return "+" + format(this.effect()) + " life force gain" },
             unlocked() { return true },
         },
         13: {
             title: "Sparring",
-            description: "Increase mana capacity by 3% per ★.",
+            description: "Increase life force gain by droplets",
             cost() { return new Decimal(300) },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
             effect() {
-                let effect = new Decimal(0.03).times(player[this.layer].points).add(1)
-                return softcap(effect, new Decimal(2.5), 0.3)
+                let effect = player.points.add(1).log10().times(0.07).add(1)
+                return softcap(effect, new Decimal(5.0), 0.3)
             },
-            effectDisplay() { return format(this.effect()) + "x mana capacity" },
+            effectDisplay() { return format(this.effect()) + "x life force" },
             unlocked() { return true },
         },
         //Five Fiery Demon Hounds method
@@ -485,6 +488,18 @@ addLayer("b", {
                 return softcap(effect, new Decimal(2.5), 0.3)
             },
             effectDisplay() { return format(this.effect()) + "x mana gain" },
+            unlocked() { return hasUpgrade("t", 31) },
+        },
+        21: {
+            title: "Consume Salamander Blood",
+            description: "Increase 'Body of Mana' base effect by +0.02.",
+            cost() { return new Decimal(1000) },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            effect() {
+                return new Decimal(0.02)
+            },
             unlocked() { return hasUpgrade("t", 31) },
         },
         //Placid Lake, Sun and Moon Reflected method
