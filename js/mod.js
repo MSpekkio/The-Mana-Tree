@@ -2,7 +2,7 @@ let modInfo = {
 	name: "The Mana Tree",
 	author: "MSpekkio",
 	pointsName: "mana",
-	modFiles: ["layers.js", "achievements.js", "tree.js"],
+	modFiles: ["layers/t.js", "layers/d.js", "layers/c.js", "layers/b.js", "layers/achievements.js", "tree.js"],
 
 	discordName: "",
 	discordLink: "",
@@ -55,7 +55,7 @@ function getPointGen() {
 	if (hasUpgrade("t", 22)) gain = gain.times(upgradeEffect("t", 22))
 	if (hasUpgrade("d", 33)) gain = gain.times(upgradeEffect("d", 33))
 	if (player.c.points.gte(1)) gain = gain.times(tmp.c.effect)
-    if (hasUpgrade("b", 11)) gain = gain.times(upgradeEffect("b", 11))
+    if (hasUpgrade("b", 21)) gain = gain.times(upgradeEffect("b", 21))
 	
 
 	let cap = new Decimal(100)
@@ -63,6 +63,7 @@ function getPointGen() {
 	if (hasUpgrade("t", 21)) cap = cap.times(upgradeEffect("t", 21))
 	if (hasUpgrade("d", 31)) cap = cap.times(upgradeEffect("d", 31))
     if (hasUpgrade("b", 13)) cap = cap.times(upgradeEffect("b", 13))
+	if (hasUpgrade("b", 31)) cap = cap.times(upgradeEffect("b", 31))
 	cap = cap.times(tmp.c.effect)
 	player.manaCap = cap
 
