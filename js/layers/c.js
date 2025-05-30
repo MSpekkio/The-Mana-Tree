@@ -12,7 +12,13 @@ addLayer("c", {
         let req = new Decimal(100000)
         return req
     }, // Can be a function that takes requirement increases into account
-    effect() { return new Decimal(2).pow(player[this.layer].points) },
+    effect() {
+        let effect = new Decimal(2).pow(player[this.layer].points)
+        if (player.b.points.gte(1)) {
+            effect = effect.add(player.b.points)
+        }
+        return effect
+    },
     effectDescription() { return "which multiplies mana gain and cap by "+format(this.effect()) },
     resource: "core ★", // Name of prestige currency
     baseResource: "droplets of mana", // Name of resource prestige is based on
@@ -28,21 +34,18 @@ addLayer("c", {
             requirementDescription: "1★ core",
             effectDescription: "Keep all travel upgrades on reset.",
             done() { return player[this.layer].points.gte(1) },
-            effect() { return new Decimal(1) },
             unlocked() { return true },
         },
         1: {
             requirementDescription: "2★ core",
-            effectDescription: "Unlock Body Tempering and new Travel upgrades.",
+            effectDescription: "Unlock Body Tempering.",
             done() { return player[this.layer].points.gte(2) },
-            effect() { return new Decimal(1) },
             unlocked() { return true },
         },
         2: {
-            requirementDescription: "3★ core",
+            requirementDescription: "5★ core",
             effectDescription: "Unlock Core Meridans - Not Implemented",
-            done() { return player[this.layer].points.gte(3) },
-            effect() { return new Decimal(1) },
+            done() { return player[this.layer].points.gte(5) },
             unlocked() { return true },
         },
     },

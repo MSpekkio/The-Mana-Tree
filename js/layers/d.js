@@ -2,10 +2,12 @@ addLayer("d", {
     name: "drops", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "💧", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
-    startData() { return {
-        unlocked: false, // Whether the layer is unlocked
-		points: new Decimal(0),
-    }},
+    startData() {
+        return {
+            unlocked: false, // Whether the layer is unlocked
+            points: new Decimal(0),
+        }
+    },
     color: "#aec8f2",
     requires() {
         let req = new Decimal(10)
@@ -13,19 +15,21 @@ addLayer("d", {
         if (hasUpgrade("d", 14)) req = req.times(upgradeEffect("d", 14).cost)
         if (hasUpgrade("d", 22)) req = req.div(upgradeEffect("d", 22))
         if (hasUpgrade("d", 24)) req = req.times(upgradeEffect("d", 24).cost)
-         return req
+        return req
     }, // Can be a function that takes requirement increases into account
     resource: "droplets of mana", // Name of prestige currency
     baseResource: "mana", // Name of resource prestige is based on
-    baseAmount() {return player.points}, // Get the current amount of baseResource
+    baseAmount() { return player.points }, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.75, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         let mult = new Decimal(1)
         if (hasUpgrade("d", 13)) mult = mult.times(upgradeEffect("d", 13))
         if (hasUpgrade("d", 23)) mult = mult.times(upgradeEffect("d", 23))
-        if (hasUpgrade("d", 32)) mult = mult.times(upgradeEffect("d", 32))
+        if (hasUpgrade("d", 31)) mult = mult.times(upgradeEffect("d", 31))
         if (hasUpgrade("b", 12)) mult = mult.times(upgradeEffect("b", 12))
+        if (hasUpgrade("b", 41)) mult = mult.times(upgradeEffect("b", 41))
+        if (hasUpgrade("t", 23)) mult = mult.times(upgradeEffect("t", 23))
 
         return mult
     },
@@ -41,29 +45,41 @@ addLayer("d", {
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
-        {key: "d", description: "D: Reset for droplets of mana", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        { key: "d", description: "D: Reset for droplets of mana", onPress() { if (canReset(this.layer)) doReset(this.layer) } },
     ],
-    layerShown(){ return player.points.gte(5) || player.a.achievements.includes("11") }, // Show the layer if you have at least 5 point
+    layerShown() { return player.points.gte(5) || player.a.achievements.includes("11") }, // Show the layer if you have at least 5 point
+    doReset(resettingLayer) { // What happens when you reset this layer 
+        if (layers[resettingLayer].row <= this.row) return;
+
+        layerDataReset(this.layer);
+
+        if (layers[resettingLayer].row == 1 && player.c.milestones.includes("0")) {
+            player[this.layer].upgrades.push("15");
+            player[this.layer].upgrades.push("25");
+            player[this.layer].upgrades.push("35");
+        }
+    },
     upgrades: {
         11: {
             title: "Take a deep breath",
             description: "Refine your breathing to increase mana gain.",
             cost: new Decimal(2),
-            unlocked() { return true},
-            effect() { 
+            unlocked() { return true },
+            effect() {
                 let effect = new Decimal(2.00 + hasUpgrade(this.layer, "12")
-                                               + hasUpgrade(this.layer, "13")
-                                               + hasUpgrade(this.layer, "14"))
+                    + hasUpgrade(this.layer, "13")
+                    + hasUpgrade(this.layer, "14"))
 
                 if (hasUpgrade("d", 21)) {
-                    effect = effect.add(new Decimal(1.00 
-                                               + hasUpgrade(this.layer, "22")
-                                               + hasUpgrade(this.layer, "23")
-                                               + hasUpgrade(this.layer, "24")))
+                    effect = effect.add(new Decimal(1.00
+                        + hasUpgrade(this.layer, "22")
+                        + hasUpgrade(this.layer, "23")
+                        + hasUpgrade(this.layer, "24")))
                 }
                 if (hasUpgrade("d", 34)) effect = effect.times(upgradeEffect("d", 34))
-                return effect},
-            effectDisplay() { return "+"+format(this.effect()) },
+                return effect
+            },
+            effectDisplay() { return "+" + format(this.effect()) },
         },
         12: {
             title: "Efficient Breathing I",
@@ -77,11 +93,11 @@ addLayer("d", {
             description: "Each droplet you form increases droplet gain by 1%.",
             cost: new Decimal(10),
             unlocked() { return true },
-            effect() { 
+            effect() {
                 let effect = new Decimal(0.01).times(player[this.layer].total).add(1)
-                return softcap(softcap(effect, new Decimal(2.5), 0.3), new Decimal(10.0), 0.3)
+                return softcap(softcap(effect, new Decimal(2.5), 0.3), new Decimal(5.0), 0.1)
             },
-            effectDisplay() { return format(this.effect())+"x" }
+            effectDisplay() { return format(this.effect()) + "x" }
         },
         14: {
             title: "Deep Breathing I",
@@ -94,7 +110,7 @@ addLayer("d", {
             title: "Look for a better way",
             description: "Unlock Travel.",
             cost: new Decimal(35),
-            unlocked() { return hasUpgrade(this.layer, "14") },
+            unlocked() { return hasUpgrade(this.layer, "14") || hasMilestone("c", 0) },
             onPurchased() {
                 player.t.unlocked = true
             },
@@ -122,7 +138,7 @@ addLayer("d", {
                 let effect = new Decimal(player.points).add(1).log10().times(0.13).add(1)
                 return softcap(softcap(effect, new Decimal(2.5), new Decimal(0.3)), new Decimal(10.0), 0.3)
             },
-            effectDisplay() { return format(this.effect())+"x" }
+            effectDisplay() { return format(this.effect()) + "x" }
         },
         24: {
             title: "Deep Breathing II",
@@ -135,7 +151,7 @@ addLayer("d", {
             title: "Breathing isn't enough",
             description: "Unlock new Travel upgrades.",
             cost: new Decimal(800),
-            unlocked() { return hasUpgrade("d", "24") },
+            unlocked() { return hasUpgrade("d", "24") || hasMilestone("c", 0) },
         },
         //unlocked by Wandering Sage II
         31: {
@@ -143,47 +159,53 @@ addLayer("d", {
             description: "Increase droplet gain by droplets.",
             cost: new Decimal(1500),
             unlocked() { return hasUpgrade("t", "21") },
-            effect() { 
+            effect() {
                 let base = new Decimal(0.22)
                 if (hasUpgrade("b", "32")) base = base.add(upgradeEffect("b", 32))
 
                 let effect = player[this.layer].points.add(1).log10().times(base).add(1)
-                return softcap(effect, new Decimal(5.0), new Decimal(0.3))
+                return softcap(effect, new Decimal(5.0), new Decimal(0.2))
             },
-            effectDisplay() { return format(this.effect())+"x" }
+            effectDisplay() { return format(this.effect()) + "x" }
         },
         32: {
             title: "Mind of mana",
             description: "Increase mana cap by droplets.",
             cost: new Decimal(5000),
             unlocked() { return hasUpgrade("t", "21") },
-            effect() { 
-                let effect = player[this.layer].points.add(1).log10().times(0.92).add(1)
-                return softcap(effect, new Decimal(5.0), new Decimal(0.3))
+            effect() {
+                let base = new Decimal(0.78)
+                if (hasUpgrade("b", "33")) base = base.add(upgradeEffect("b", 33))
+
+                let effect = player[this.layer].points.add(1).log10().times(base).add(1)
+                return softcap(effect, new Decimal(4.0), new Decimal(0.2))
             },
-            effectDisplay() { return format(this.effect())+"x" }
+            effectDisplay() { return format(this.effect()) + "x" }
         },
         33: {
             title: "Spirit of mana",
             description: "Increase main gain by droplets.",
             cost: new Decimal(8000),
             unlocked() { return hasUpgrade("t", "21") },
-            effect() { 
-                let effect = player[this.layer].points.add(1).log10().times(0.13).add(1)
-                return softcap(effect, new Decimal(5.0), new Decimal(0.3))
+            effect() {
+                let base = new Decimal(0.13)
+                if (hasUpgrade("b", "42")) base = base.add(upgradeEffect("b", 42))
+
+                let effect = player[this.layer].points.add(1).log10().times(base).add(1)
+                return softcap(effect, new Decimal(5.0), new Decimal(0.2))
             },
-            effectDisplay() { return format(this.effect())+"x" }
+            effectDisplay() { return format(this.effect()) + "x" }
         },
         34: {
             title: "Soul of mana",
             description: "Double deep breath effect.",
             cost: new Decimal(15000),
-            effect() { 
+            effect() {
                 let effect = new Decimal(2.00)
                 if (hasUpgrade("b", "23")) effect = effect.add(upgradeEffect("b", 23))
                 return effect
             },
-            effectDisplay() { return format(this.effect())+"x" },
+            effectDisplay() { return format(this.effect()) + "x" },
             unlocked() { return hasUpgrade("t", "21") },
         },
         35: {
