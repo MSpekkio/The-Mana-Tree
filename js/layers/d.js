@@ -170,25 +170,27 @@ addLayer("d", {
         },
         32: {
             title: "Mind of mana",
-            description: "Increase mana cap by droplets.",
-            cost: new Decimal(5000),
+            description: "Increase base mana gain by droplets.",
+            cost: new Decimal(4000),
             unlocked() { return hasUpgrade("t", "21") },
             effect() {
-                let base = new Decimal(0.78)
+                let base = new Decimal(0.76)
                 if (hasUpgrade("b", "33")) base = base.add(upgradeEffect("b", 33))
+                let cap = new Decimal(6.0)
+                if (hasUpgrade("b", "33")) cap = cap.times(2)
 
                 let effect = player[this.layer].points.add(1).log10().times(base).add(1)
-                return softcap(effect, new Decimal(4.0), new Decimal(0.2))
+                return softcap(effect, cap, new Decimal(0.2))
             },
-            effectDisplay() { return format(this.effect()) + "x" }
+            effectDisplay() { return "+" + format(this.effect()) }
         },
         33: {
             title: "Spirit of mana",
             description: "Increase main gain by droplets.",
-            cost: new Decimal(8000),
+            cost: new Decimal(6000),
             unlocked() { return hasUpgrade("t", "21") },
             effect() {
-                let base = new Decimal(0.13)
+                let base = new Decimal(0.18)
                 if (hasUpgrade("b", "42")) base = base.add(upgradeEffect("b", 42))
 
                 let effect = player[this.layer].points.add(1).log10().times(base).add(1)
@@ -199,7 +201,7 @@ addLayer("d", {
         34: {
             title: "Soul of mana",
             description: "Double deep breath effect.",
-            cost: new Decimal(15000),
+            cost: new Decimal(10000),
             effect() {
                 let effect = new Decimal(2.00)
                 if (hasUpgrade("b", "23")) effect = effect.add(upgradeEffect("b", 23))
@@ -211,7 +213,7 @@ addLayer("d", {
         35: {
             title: "Core of mana",
             description: "Unlock your Core",
-            cost: new Decimal(50000),
+            cost: new Decimal(15000),
             unlocked() { return hasUpgrade("t", "21") },
             onPurchased() {
                 player.t.unlocked = true

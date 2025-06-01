@@ -49,20 +49,18 @@ function getPointGen() {
     let gain = new Decimal(1)
     //add
     if (hasUpgrade("d", 11)) gain = gain.add(upgradeEffect("d", 11))
+	if (hasUpgrade("d", 32)) gain = gain.add(upgradeEffect("d", 32))
+
     //mult
-    if (hasUpgrade("t", 12)) gain = gain.times(upgradeEffect("t", 12))
+    gain = gain.times(tmp.t.effect) //location mana gain
     if (hasUpgrade("t", 13)) gain = gain.times(upgradeEffect("t", 13))
-    if (hasUpgrade("t", 22)) gain = gain.times(upgradeEffect("t", 22))
     if (hasUpgrade("d", 33)) gain = gain.times(upgradeEffect("d", 33))
     if (player.c.points.gte(1)) gain = gain.times(tmp.c.effect)
     if (hasUpgrade("b", 21)) gain = gain.times(upgradeEffect("b", 21))
 
-
     let cap = new Decimal(100)
     if (hasUpgrade("t", 11)) cap = cap.times(upgradeEffect("t", 11))
     if (hasUpgrade("t", 21)) cap = cap.times(upgradeEffect("t", 21))
-    if (hasUpgrade("d", 32)) cap = cap.times(upgradeEffect("d", 31))
-    if (hasUpgrade("b", 13)) cap = cap.times(upgradeEffect("b", 13))
     if (hasUpgrade("b", 31)) cap = cap.times(upgradeEffect("b", 31))
     cap = cap.times(tmp.c.effect)
     player.manaCap = cap
@@ -92,7 +90,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-    return player.c.points.gte(new Decimal("2"))
+    return player.c.points.gte(new Decimal("5"))
 }
 
 // Less important things beyond this point!

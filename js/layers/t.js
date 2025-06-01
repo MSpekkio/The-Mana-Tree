@@ -17,6 +17,13 @@ addLayer("t", {
     resource: "spirit stone", // Name of prestige currency
     baseResource: "mana", // Name of resource prestige is based on
     row: 0,
+    effect() { // calculate Location bonus
+        let effect = new Decimal(1)
+        
+        if (hasUpgrade("t", "12")) effect = upgradeEffect("t", "11")
+        if (hasUpgrade("t", "22")) effect = upgradeEffect("t", "22")
+        return effect
+    },
     resetsNothing: true,
     branches: ["d"], // This layer is a branch of the drops layer
     clickables:
@@ -90,13 +97,13 @@ addLayer("t", {
             title: "Wisdom from a traveler I",
             description: "New breathing techniques allow more mana, more upgrades.",
             cost() { return new Decimal(3).pow(player[this.layer].upgrades.length) },
-            effect() { return new Decimal(4.0) },
+            effect() { return new Decimal(3.0) },
             effectDisplay() { return format(this.effect()) + "x mana cap" },
             unlocked() { return true },
         },
         12: {
             title: "Calming Grotto",
-            description: "Discover a calming grotto with increased mana gain.",
+            description: "Travel to a calming grotto with increased mana gain.",
             cost() { return new Decimal(3).pow(player[this.layer].upgrades.length) },
             effect() { return new Decimal(3.0) },
             effectDisplay() { return format(this.effect()) + "x mana gain" },
@@ -108,7 +115,7 @@ addLayer("t", {
             cost() { return new Decimal(3).pow(player[this.layer].upgrades.length) },
             effect() {
                 let effect = new Decimal(0.01).times(player[this.layer].points).add(1)
-                return softcap(effect, new Decimal(2.5), 0.3)
+                return softcap(softcap(effect, new Decimal(2.5), 0.3), new Decimal(5.0), 0.5)
             },
             effectDisplay() { return format(this.effect()) + "x mana gain" },
             unlocked() { return true },
@@ -117,25 +124,17 @@ addLayer("t", {
             title: "Wisdom from a traveler II",
             description: "Unlock more mana and more upgrades.",
             cost() { return new Decimal(3).pow(player[this.layer].upgrades.length) },
-            effect() { return new Decimal(5.0) },
+            effect() { return new Decimal(4.0) },
             effectDisplay() { return format(this.effect()) + "x mana cap" },
             unlocked() { return hasUpgrade("d", "25") || hasMilestone("c", 0) },
         },
         22: {
             title: "Climb a mountain",
-            description: "The further you go, the more you find.",
+            description: "Leave the grotto and climb a mountain for improved mana gain.",
             cost() { return new Decimal(3).pow(player[this.layer].upgrades.length) },
             effect() { return new Decimal(5) },
             effectDisplay() { return format(this.effect()) + "x mana gain" },
-            unlocked() { return hasUpgrade("d", "25") || hasMilestone("c", 0) },
-        },
-        23: {
-            title: "Buy a Sun Shadow Lotus",
-            description: "Natural wonders, mystical power.",
-            cost() { return new Decimal(3).pow(player[this.layer].upgrades.length) },
-            effect() { return new Decimal(1.7) },
-            effectDisplay() { return format(this.effect()) + "x droplet gain" },
-            unlocked() { return hasUpgrade("d", "25") || hasMilestone("c", 0) },
+            unlocked() { return (hasUpgrade("t", 12) && hasUpgrade("d", "25")) || hasMilestone("c", 0) },
         },
         31: {
             title: "Body Tempering Manual",

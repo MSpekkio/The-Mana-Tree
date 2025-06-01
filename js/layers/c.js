@@ -9,11 +9,11 @@ addLayer("c", {
     }},
     color: "#ed07e5",
     requires() {
-        let req = new Decimal(100000)
+        let req = new Decimal(40000)
         return req
     }, // Can be a function that takes requirement increases into account
     effect() {
-        let effect = new Decimal(2).pow(player[this.layer].points)
+        let effect = new Decimal(2).pow(player[this.layer].points).add(2)
         if (player.b.points.gte(1)) {
             effect = effect.add(player.b.points)
         }

@@ -10,7 +10,7 @@ addLayer("b", {
         }
     },
     color: "#f2f2ae",
-    requires() { return new Decimal(300000) }, // Can be a function that takes requirement increases into account
+    requires() { return new Decimal(100000) }, // Can be a function that takes requirement increases into account
     effect() {
         if (player[this.layer].points.lt(1)) return new Decimal(0)
         let gain = new Decimal(2).pow(player[this.layer].points.sub(1))
@@ -22,7 +22,7 @@ addLayer("b", {
         return gain
     },
     effectDescription() {
-        return "which incrases the core effect by +" + format(player.b.points) + " and " + format(player.b.lifeForce) + " total life force (+" + format(this.effect()) + " per second)"
+        return "which increases the core effect by +" + format(player.b.points) + " and " + format(player.b.lifeForce) + " total life force (+" + format(this.effect()) + " per second)"
     },
     update(diff) { // Called every tick, to update the layer
         if (player[this.layer].points.gte(1)) {
@@ -35,7 +35,7 @@ addLayer("b", {
     baseResource: "droplets of mana", // Name of resource prestige is based on
     baseAmount() { return player.d.points }, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.75, // Prestige currency exponent
+    exponent: 0.85, // Prestige currency exponent
     base: 0.5, // Base for the cost calculation
     row: 1, // Row the layer is in on the tree (0 is the first row)
     branches: ["c"], // This layer is a branch of the core layer
@@ -103,7 +103,7 @@ addLayer("b", {
         //Five Fiery Demon Hounds method
         21: {
             title: "Bed of hot coals",
-            description: "Increase mana gain by 5% per body ★.",
+            description: "Increase mana gain by 3% per body ★.",
             cost() { return new Decimal(500) },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
@@ -112,7 +112,7 @@ addLayer("b", {
                 let effectivepoints = player[this.layer].points
                 if (hasUpgrade("b", 51)) effectivepoints = effectivepoints.times(2)
 
-                let effect = new Decimal(0.05).times(effectivepoints).add(1)
+                let effect = new Decimal(0.03).times(effectivepoints).add(1)
                 return softcap(effect, new Decimal(2.5), 0.3)
             },
             effectDisplay() { return format(this.effect()) + "x mana gain" },
@@ -145,7 +145,7 @@ addLayer("b", {
         //Placid Lake, Sun and Moon Reflected method
         31: {
             title: "Mediate in a freezing lake",
-            description: "Increase mana cap by 3% per body ★.",
+            description: "Increase mana cap by 1% per body ★.",
             cost() { return new Decimal(600) },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
@@ -154,7 +154,7 @@ addLayer("b", {
                 let effectivepoints = player[this.layer].points
                 if (hasUpgrade("b", 51)) effectivepoints = effectivepoints.times(2)
 
-                let effect = new Decimal(0.03).times(effectivepoints).add(1)
+                let effect = new Decimal(0.01).times(effectivepoints).add(1)
                 return softcap(effect, new Decimal(2.5), 0.3)
             },
             effectDisplay() { return format(this.effect()) + "x mana cap" },
@@ -174,7 +174,7 @@ addLayer("b", {
         },
         33: {
             title: "Drown in the Moon",
-            description: "Raise 'Mind of Mana' effect by +0.15.",
+            description: "Raise 'Mind of Mana' effect by +0.56 and increase the soft cap.",
             cost() { return new Decimal(60000) },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
@@ -187,7 +187,7 @@ addLayer("b", {
         //Jin Ro, the Blood Flower
         41: {
             title: "Planting the brush",
-            description: "Increase droplet gain by 5% per body ★.",
+            description: "Increase droplet gain by 3% per body ★.",
             cost() { return new Decimal(700) },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
@@ -196,7 +196,7 @@ addLayer("b", {
                 let effectivepoints = player[this.layer].points
                 if (hasUpgrade("b", 51)) effectivepoints = effectivepoints.times(2)
 
-                let effect = new Decimal(0.05).times(effectivepoints).add(1)
+                let effect = new Decimal(0.03).times(effectivepoints).add(1)
                 return softcap(effect, new Decimal(2.5), 0.3)
             },
             effectDisplay() { return format(this.effect()) + "x droplet gain" },
@@ -225,6 +225,7 @@ addLayer("b", {
                 let effect = player.b.lifeForce.add(1).log10().times(0.05).add(1)
                 return softcap(effect, new Decimal(5.0), 0.3)
             },
+            effectDisplay() { return format(this.effect()) + "x droplet gain" },
             unlocked() { return hasUpgrade("t", 33) },
         },
         51: {
@@ -238,7 +239,7 @@ addLayer("b", {
                 let effect = new Decimal(2.0)
                 return effect
             },
-            unlocked() { return player.t.upgrades.includes("23", "33", "43") },
+            unlocked() { return hasUpgrade("b", 23) && hasUpgrade("b", 33) && hasUpgrade("b", 43) },
         },
     }
 })
