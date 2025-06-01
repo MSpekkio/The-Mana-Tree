@@ -17,11 +17,11 @@ let VERSION = {
 }
 // If you change anything in the game, make sure to keep it up to date
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.1</h3><br>
-		- 3 layers.<br>
-		- 20 upgrades.<br>
-		- 5 achievements.<br>
-		- 2 milestones.<br>
+	<h3>v0.1</h3> - The bare minimum<br>
+		- 4 layers.<br>
+		- 37 upgrades.<br>
+		- 9 achievements.<br>
+		- 4 milestones.<br>
 		- self-doubt.<br>
 	<h3>v0.0</h3><br>
 		- We all start life at zero.<br>`

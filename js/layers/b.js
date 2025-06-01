@@ -241,5 +241,20 @@ addLayer("b", {
             },
             unlocked() { return hasUpgrade("b", 23) && hasUpgrade("b", 33) && hasUpgrade("b", 43) },
         },
+        51: {
+            title: "Innovate",
+            description: "Increase mana gain by life force.",
+            cost() { return new Decimal(500000) },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            effect() {
+                let effect = player.b.lifeForce.add(1).log10().times(0.045).add(1)
+                return softcap(effect, new Decimal(5.0), 0.3)
+            },
+            effectDisplay() { return format(this.effect()) + "x mana gain" },
+            unlocked() { return hasUpgrade("b", 23) && hasUpgrade("b", 33) && hasUpgrade("b", 43) },
+        },
+
     }
 })
