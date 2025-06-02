@@ -113,7 +113,7 @@ addLayer("a", {
             },
             style() {
                 return {
-                    'background-color': "#f2c8ae",
+                    'background-color': "#ed07e5"
                 }
             },
         },
@@ -127,7 +127,7 @@ addLayer("a", {
             },
             style() {
                 return {
-                    'background-color': "#f2c8ae",
+                    'background-color': "#ed07e5"
                 }
             },
         },
@@ -141,7 +141,7 @@ addLayer("a", {
             },
             style() {
                 return {
-                    'background-color': "#f2c8ae",
+                    'background-color': "#f2f2ae",
                 }
             },
         },
