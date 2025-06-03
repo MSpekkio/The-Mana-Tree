@@ -2,7 +2,7 @@ let modInfo = {
     name: "The Mana Tree",
     author: "MSpekkio",
     pointsName: "mana",
-    modFiles: ["layers/t.js", "layers/d.js", "layers/c.js", "layers/b.js", "layers/achievements.js", "tree.js"],
+    modFiles: ["layers/m.js", "layers/t.js", "layers/d.js", "layers/c.js", "layers/b.js", "layers/achievements.js", "tree.js"],
 
     discordName: "",
     discordLink: "",
@@ -12,11 +12,13 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-    num: "0.1",
-    name: "The bare minimum",
+    num: "0.2",
+    name: "Mana is a fickle mistress",
 }
 // If you change anything in the game, make sure to keep it up to date
 let changelog = `<h1>Changelog:</h1><br>
+    <h3>v0.2</h3> - Mana is a fickle mistress<br>
+		- 
 	<h3>v0.1</h3> - The bare minimum<br>
 		- 4 layers.<br>
 		- 38 upgrades.<br>
