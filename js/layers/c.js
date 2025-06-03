@@ -29,7 +29,7 @@ addLayer("c", {
     branches: ["d"], // This layer is a branch of the drops layer
     layerShown() { return hasUpgrade("d", 35) || player.a.achievements.includes(15) }, // Show the layer if you have at least 5 point
     canReset() {
-        if (player[this.layer].points.lt(10)) {
+        if (player[this.layer].points.lt(5)) {
             return tmp[this.layer].baseAmount.gte(tmp[this.layer].nextAt)
         }
         return false;
