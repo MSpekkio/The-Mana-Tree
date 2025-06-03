@@ -8,7 +8,7 @@ addLayer("c", {
     }},
     color: "#ed07e5",
     requires() {
-        let req = new Decimal(40000)
+        let req = new Decimal(20000)
         return req
     }, // Can be a function that takes requirement increases into account
     effect() {
@@ -27,7 +27,20 @@ addLayer("c", {
     base: 0.5,
     row: 2, // Row the layer is in on the tree (0 is the first row)
     branches: ["d"], // This layer is a branch of the drops layer
-    layerShown(){ return hasUpgrade("d", 35) || player.a.achievements.includes(15) }, // Show the layer if you have at least 5 point
+    layerShown() { return hasUpgrade("d", 35) || player.a.achievements.includes(15) }, // Show the layer if you have at least 5 point
+    canReset() {
+        if (player[this.layer].points.lt(10)) {
+            return tmp[this.layer].baseAmount.gte(tmp[this.layer].nextAt)
+        }
+        return false;
+    },
+    getResetGain() {
+        if (player[this.layer].points.lt(5)) return getResetGain(this.layer, useType = "static")
+        return new Decimal(0);
+    },
+    getNextAt(canMax) {
+        if (player[this.layer].points.lt(5)) return getNextAt(this.layer, canMax, useType = "static")
+    },
     milestones: {
         0: {
             requirementDescription: "1★ core",

@@ -64,7 +64,7 @@ addLayer("t", {
             cost: new Decimal(1600),
             amount: new Decimal(20),
             display() { return "Purchase twenty spirit stones.<br>Cost: " + format(this.cost) + " mana" },
-            unlocked() { return hasMilestone("b", 0) },
+            unlocked() { return hasMilestone("c", 1) },
             canClick() { return player.points.gte(this.cost) },
             onClick() {
                 let cost = this.cost

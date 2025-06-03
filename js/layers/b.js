@@ -10,7 +10,7 @@ addLayer("b", {
         }
     },
     color: "#f2f2ae",
-    requires() { return new Decimal(100000) }, // Can be a function that takes requirement increases into account
+    requires() { return new Decimal(50000) }, // Can be a function that takes requirement increases into account
     effect() {
         if (player[this.layer].points.lt(1)) return { lifeForceGain: new Decimal(0), coreEffect: new Decimal(0) }
         let lfGain = new Decimal(2).pow(player[this.layer].points.sub(1))
@@ -51,15 +51,17 @@ addLayer("b", {
         doLayerReset(this.layer, resettingLayer)
     },
     canReset() {
-        if (player.b.points.lt(10)) return true
+        if (player[this.layer].points.lt(10)) {
+            return tmp[this.layer].baseAmount.gte(tmp[this.layer].nextAt) 
+        }
         return false;
     },
     getResetGain() {
-        if (player.b.points.lt(10)) getResetGain(this.layer)
+        if (player[this.layer].points.lt(10)) return getResetGain(this.layer, useType = "static")
         return new Decimal(0);
     },
     getNextAt(canMax){
-        if (player.b.points.lt(10)) return getNextAt(this.layer, canMax)
+        if (player[this.layer].points.lt(10)) return getNextAt(this.layer, canMax, useType = "static")
         return new Decimal(Number.POSITIVE_INFINITY);
     },
     milestones: {

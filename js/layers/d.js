@@ -29,8 +29,6 @@ addLayer("d", {
         if (hasUpgrade("d", 31)) mult = mult.times(upgradeEffect("d", 31))
         if (hasUpgrade("b", 12)) mult = mult.times(upgradeEffect("b", 12))
         if (hasUpgrade("b", 41)) mult = mult.times(upgradeEffect("b", 41))
-        if (hasUpgrade("t", 23)) mult = mult.times(upgradeEffect("t", 23))
-        if (hasMilestone("m", 1)) mult = mult.pow(0.50) // Reduce droplet gain by ^0.50 if you have Meridian milestone 1
 
         return mult
     },
@@ -176,7 +174,7 @@ addLayer("d", {
         32: {
             title: "Mind of mana",
             description: "Increase base mana gain by droplets.",
-            cost: new Decimal(4000),
+            cost: new Decimal(3000),
             unlocked() { return hasUpgrade("t", "21") },
             effect() {
                 let base = new Decimal(0.76)
@@ -192,7 +190,7 @@ addLayer("d", {
         33: {
             title: "Spirit of mana",
             description: "Increase main gain by droplets.",
-            cost: new Decimal(6000),
+            cost: new Decimal(5000),
             unlocked() { return hasUpgrade("t", "21") },
             effect() {
                 let base = new Decimal(0.18)
@@ -206,7 +204,7 @@ addLayer("d", {
         34: {
             title: "Soul of mana",
             description: "Double deep breath effect.",
-            cost: new Decimal(10000),
+            cost: new Decimal(8000),
             effect() {
                 let effect = new Decimal(2.00)
                 if (hasUpgrade("b", "23")) effect = effect.add(upgradeEffect("b", 23))
@@ -218,7 +216,7 @@ addLayer("d", {
         35: {
             title: "Core of mana",
             description: "Unlock your Core",
-            cost: new Decimal(15000),
+            cost: new Decimal(10000),
             unlocked() { return hasUpgrade("t", "21") },
             onPurchased() {
                 player.t.unlocked = true

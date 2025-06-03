@@ -13,12 +13,12 @@ let modInfo = {
 // Set your version in num and name
 let VERSION = {
     num: "0.2",
-    name: "Mana is a fickle mistress",
+    name: "Oh God, it's all so broken",
 }
 // If you change anything in the game, make sure to keep it up to date
 let changelog = `<h1>Changelog:</h1><br>
-    <h3>v0.2</h3> - Mana is a fickle mistress<br>
-		- 
+    <h3>v0.2</h3> - Oh God, it's all so broken<br>
+		- Bug fixes, no new gameplay. <br>
 	<h3>v0.1</h3> - The bare minimum<br>
 		- 4 layers.<br>
 		- 38 upgrades.<br>
@@ -64,7 +64,7 @@ function getPointGen() {
     if (hasUpgrade("t", 11)) cap = cap.times(upgradeEffect("t", 11))
     if (hasUpgrade("t", 21)) cap = cap.times(upgradeEffect("t", 21))
     if (hasUpgrade("b", 31)) cap = cap.times(upgradeEffect("b", 31))
-    cap = cap.times(tmp.c.effect)
+    if (player.c.points.gte(1)) cap = cap.times(tmp.c.effect)
     player.manaCap = cap
 
     if (player.points.gte(cap)) {
@@ -92,7 +92,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-    return player.c.points.gte(10.0)
+    return player.c.points.gte(5.0)
 }
 
 // Less important things beyond this point!
@@ -112,7 +112,7 @@ function maxTickLength() {
 function fixOldSave(oldVersion) {
 	console.log(oldVersion)
 	if (oldVersion === "0.1") {
-		if (player.b.points.gte(1)) player.b.points = new Decimal(10)
-		if (player.c.get(5)) player.c.points = new Decimal(5)
+		if (player.b.points.gte(10)) player.b.points = new Decimal(10)
+		if (player.c.points.gte(5)) player.c.points = new Decimal(5)
 	}
 }
