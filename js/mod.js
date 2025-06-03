@@ -12,11 +12,13 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-    num: "0.2",
-    name: "Oh God, it's all so broken",
+    num: "0.3",
+    name: "Mo' Mana, Mo' Problems",
 }
 // If you change anything in the game, make sure to keep it up to date
 let changelog = `<h1>Changelog:</h1><br>
+    <h3>v0.3</h3> - Mo' Mana, Mo' Problems<br>
+		-  <br>
     <h3>v0.2</h3> - Oh God, it's all so broken<br>
 		- Bug fixes, no new gameplay. <br>
 	<h3>v0.1</h3> - The bare minimum<br>

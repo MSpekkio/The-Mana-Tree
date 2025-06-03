@@ -19,7 +19,7 @@ addLayer("m", {
     base: 0.5,
     row: 2, // Row the layer is in on the tree (0 is the first row)
     branches: ["b"], // This layer is a branch of the drops layer
-    layerShown() { return false && (hasMilestone("c", 2) || player.a.achievements.includes(20)) },
+    layerShown() { return hasMilestone("c", 2) || player.a.achievements.includes(20) },
     canReset() {
         if (player[this.layer].points.lt(10)) {
             return tmp[this.layer].baseAmount.gte(tmp[this.layer].nextAt)
@@ -57,7 +57,10 @@ addLayer("m", {
 
                 return base.pow(x).mul(mult)
             },
-            effect(x) { return x.add(1).pow(2) },
+            effect(x) {
+                if (x.lte(0.0)) return new Decimal(0)
+                return x.add(1).pow(2)
+            },
             display(x) {
                 return "Increase base mana gain and base mana capacity.\n" + format(player[this.layer].buyables[11]) + " of 100 \n +" + format(this.effect(x))
             },

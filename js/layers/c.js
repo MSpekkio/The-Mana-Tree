@@ -35,11 +35,11 @@ addLayer("c", {
         return false;
     },
     getResetGain() {
-        if (player[this.layer].points.lt(5)) return getResetGain(this.layer, useType = "static")
+        if (player[this.layer].points.lt(10)) return getResetGain(this.layer, useType = "static")
         return new Decimal(0);
     },
     getNextAt(canMax) {
-        if (player[this.layer].points.lt(5)) return getNextAt(this.layer, canMax, useType = "static")
+        if (player[this.layer].points.lt(10)) return getNextAt(this.layer, canMax, useType = "static")
     },
     milestones: {
         0: {
@@ -56,7 +56,7 @@ addLayer("c", {
         },
         2: {
             requirementDescription: "5★ core",
-            effectDescription: "Unlock Core Meridans - Not Implemented",
+            effectDescription: "Unlock Core Meridans",
             done() { return player[this.layer].points.gte(5) },
             unlocked() { return true },
         },
