@@ -65,13 +65,18 @@ addLayer("a", {
         },
         18: {
             name: "Read a book",
-            done() { return player.t.upgrades.includes("31", "32", "33") },
+            done() { return  hasUpgrade("t", 31) && hasUpgrade("t", 32) && hasUpgrade("t", 33) },
             tooltip: "Sound mind in sound body",
         },
         19: {
             name: "Make something new",
-            done() { return player.b.upgrades.includes("51") },
+            done() { return hasUpgrade("b", 51) && hasUpgrade("b", 52)},
             tooltip: "Be more than the sum of your parts",
+        },
+        20: {
+            name: "Droplets into Rivers",
+            done() { return player.m.points.gte(1) },
+            tooltip: "Start refining your mana.",
         },
     },
     clickables: {

@@ -43,12 +43,24 @@ addLayer("b", {
     base: 0.5, // Base for the cost calculation
     row: 2, // Row the layer is in on the tree (0 is the first row)
     branches: ["c"], // This layer is a branch of the core layer
-    layerShown() { return player.c.milestones.includes("1") || player.a.achievements.includes("16") }, // Show the layer if you have at least 5 point
+    layerShown() { return hasMilestone("c", 1) || player.a.achievements.includes(16) }, // Show the layer if you have at least 5 point
     doReset(resettingLayer) { // What happens when you reset this layer)
         if (layers[resettingLayer].row == this.row) this.lifeForce = new Decimal(0)
         if (layers[resettingLayer].row <= this.row) return
         
         doLayerReset(this.layer, resettingLayer)
+    },
+    canReset() {
+        if (player.b.points.lt(10)) return true
+        return false;
+    },
+    getResetGain() {
+        if (player.b.points.lt(10)) getResetGain(this.layer)
+        return new Decimal(0);
+    },
+    getNextAt(canMax){
+        if (player.b.points.lt(10)) return getNextAt(this.layer, canMax)
+        return new Decimal(Number.POSITIVE_INFINITY);
     },
     milestones: {
         0: {

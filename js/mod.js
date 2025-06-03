@@ -72,7 +72,7 @@ function getPointGen() {
         let reduction = player.points.div(cap).pow(3)
         if (reduction.lte(1)) reduction = new Decimal(1)
         gain = gain.div(reduction)
-        if (gain.lte(0)) gain = new Decimal(0)
+        if (gain.lte(1.0)) gain = new Decimal(0)
     }
 
     return gain
@@ -92,7 +92,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-    return player.c.points.gte(new Decimal("5"))
+    return player.c.points.gte(10.0)
 }
 
 // Less important things beyond this point!
@@ -110,4 +110,9 @@ function maxTickLength() {
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
 // you can cap their current resources with this.
 function fixOldSave(oldVersion) {
+	console.log(oldVersion)
+	if (oldVersion === "0.1") {
+		if (player.b.points.gte(1)) player.b.points = new Decimal(10)
+		if (player.c.get(5)) player.c.points = new Decimal(5)
+	}
 }

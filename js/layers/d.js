@@ -30,6 +30,7 @@ addLayer("d", {
         if (hasUpgrade("b", 12)) mult = mult.times(upgradeEffect("b", 12))
         if (hasUpgrade("b", 41)) mult = mult.times(upgradeEffect("b", 41))
         if (hasUpgrade("t", 23)) mult = mult.times(upgradeEffect("t", 23))
+        if (hasMilestone("m", 1)) mult = mult.pow(0.50) // Reduce droplet gain by ^0.50 if you have Meridian milestone 1
 
         return mult
     },
@@ -58,6 +59,10 @@ addLayer("d", {
             player[this.layer].upgrades.push("25");
             player[this.layer].upgrades.push("35");
         }
+    },
+    passiveGeneration() {
+        if (hasMilestone("m", 0)) return 0.10 // 10% of droplets per second
+        return 0.00 // no passive generation
     },
     upgrades: {
         11: {

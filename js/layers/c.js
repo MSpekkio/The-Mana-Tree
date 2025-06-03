@@ -5,7 +5,6 @@ addLayer("c", {
     startData() { return {
         unlocked: false, // Whether the layer is unlocked
 		points: new Decimal(0),
-        condensed: new Decimal(0),
     }},
     color: "#ed07e5",
     requires() {
@@ -28,11 +27,11 @@ addLayer("c", {
     base: 0.5,
     row: 2, // Row the layer is in on the tree (0 is the first row)
     branches: ["d"], // This layer is a branch of the drops layer
-    layerShown(){ return hasUpgrade("d", 35) || player.a.achievements.includes("15") }, // Show the layer if you have at least 5 point
+    layerShown(){ return hasUpgrade("d", 35) || player.a.achievements.includes(15) }, // Show the layer if you have at least 5 point
     milestones: {
         0: {
             requirementDescription: "1★ core",
-            effectDescription: "Keep all travel upgrades on reset.",
+            effectDescription: "Keep all travel upgrades on star reset.",
             done() { return player[this.layer].points.gte(1) },
             unlocked() { return true },
         },
