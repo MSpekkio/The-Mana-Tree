@@ -140,10 +140,10 @@ addLayer("t", {
             title: "Body Tempering Manual",
             description: "Explains the 'Five Fiery Demon Hounds' method",
             cost() {
-                let cost = new Decimal(1000)
+                let cost = new Decimal(500)
                 if (hasUpgrade("t", "32")) cost = cost.times(2)
                 if (hasUpgrade("t", "33")) cost = cost.times(2)
-                return cost
+                return cost.add(500.0)
             },
             unlocked() { return hasMilestone("b", 0) },
         },
@@ -151,21 +151,21 @@ addLayer("t", {
             title: "Body Tempering Manual",
             description: "Explains the 'Placid Lake, Sun and Moon Reflected' method",
             cost() {
-                let cost = new Decimal(1000)
+                let cost = new Decimal(500)
                 if (hasUpgrade("t", "31")) cost = cost.times(2)
                 if (hasUpgrade("t", "33")) cost = cost.times(2)
-                return cost
+                return cost.add(500.0)
             },
             unlocked() { return hasMilestone("b", 0) },
         },
         33: {
             title: "Body Tempering Manual",
-            description: "Explains the method of 'Jin Ro, the Blood Flower'",
+            description: "Explains the method of 'Jin Rou, the Farmer'",
             cost() {
-                let cost = new Decimal(1000)
+                let cost = new Decimal(500)
                 if (hasUpgrade("t", "31")) cost = cost.times(2)
                 if (hasUpgrade("t", "32")) cost = cost.times(2)
-                return cost
+                return cost.add(500.0)
             },
             unlocked() { return hasMilestone("b", 0) },
         },

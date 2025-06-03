@@ -1,7 +1,7 @@
 addLayer("d", {
     name: "drops", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "💧", // This appears on the layer's node. Default is the id with the first letter capitalized
-    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    position: 2, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() {
         return {
             unlocked: false, // Whether the layer is unlocked
@@ -53,7 +53,7 @@ addLayer("d", {
 
         layerDataReset(this.layer);
 
-        if (layers[resettingLayer].row == 1 && player.c.milestones.includes("0")) {
+        if (layers[resettingLayer].row == layers["c"].row && player.c.milestones.includes("0")) {
             player[this.layer].upgrades.push("15");
             player[this.layer].upgrades.push("25");
             player[this.layer].upgrades.push("35");

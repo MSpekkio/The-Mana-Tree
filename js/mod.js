@@ -19,7 +19,7 @@ let VERSION = {
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.1</h3> - The bare minimum<br>
 		- 4 layers.<br>
-		- 37 upgrades.<br>
+		- 38 upgrades.<br>
 		- 9 achievements.<br>
 		- 4 milestones.<br>
 		- self-doubt.<br>

@@ -1,7 +1,7 @@
 addLayer("c", {
     name: "core", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "🔥", // This appears on the layer's node. Default is the id with the first letter capitalized
-    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    position: 2, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: false, // Whether the layer is unlocked
 		points: new Decimal(0),
@@ -13,9 +13,9 @@ addLayer("c", {
         return req
     }, // Can be a function that takes requirement increases into account
     effect() {
-        let effect = new Decimal(2).pow(player[this.layer].points).add(2)
+        let effect = new Decimal(1.75).pow(player[this.layer].points).add(2.0)
         if (player.b.points.gte(1)) {
-            effect = effect.add(player.b.points)
+            effect = effect.add(tmp.b.effect.coreEffect)
         }
         return effect
     },
@@ -26,7 +26,7 @@ addLayer("c", {
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 1.5, // Prestige currency exponent
     base: 0.5,
-    row: 1, // Row the layer is in on the tree (0 is the first row)
+    row: 2, // Row the layer is in on the tree (0 is the first row)
     branches: ["d"], // This layer is a branch of the drops layer
     layerShown(){ return hasUpgrade("d", 35) || player.a.achievements.includes("15") }, // Show the layer if you have at least 5 point
     milestones: {

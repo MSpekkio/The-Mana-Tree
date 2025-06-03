@@ -12,21 +12,25 @@ addLayer("b", {
     color: "#f2f2ae",
     requires() { return new Decimal(100000) }, // Can be a function that takes requirement increases into account
     effect() {
-        if (player[this.layer].points.lt(1)) return new Decimal(0)
-        let gain = new Decimal(2).pow(player[this.layer].points.sub(1))
-        if (hasUpgrade("b", 11)) gain = gain.times(upgradeEffect("b", 11))
-        if (hasUpgrade("b", 12)) gain = gain.times(upgradeEffect("b", 12))
-        if (hasUpgrade("b", 13)) gain = gain.times(upgradeEffect("b", 13))
-        if (hasUpgrade("b", 32)) gain = gain.pow(upgradeEffect("b", 32))
+        if (player[this.layer].points.lt(1)) return { lifeForceGain: new Decimal(0), coreEffect: new Decimal(0) }
+        let lfGain = new Decimal(2).pow(player[this.layer].points.sub(1))
+        if (hasUpgrade("b", 11)) lfGain = lfGain.times(upgradeEffect("b", 11))
+        if (hasUpgrade("b", 12)) lfGain = lfGain.times(upgradeEffect("b", 12))
+        if (hasUpgrade("b", 13)) lfGain = lfGain.times(upgradeEffect("b", 13))
+        if (hasUpgrade("b", 14)) lfGain = lfGain.times(upgradeEffect("b", 14))
+        if (hasUpgrade("b", 32)) lfGain = lfGain.pow(upgradeEffect("b", 32))
 
-        return gain
+        let cBase = player.b.points
+        let cEffect = player.b.lifeForce.add(1).log10().times(0.005)
+
+        return { lifeForceGain: lfGain, coreEffect: cBase.add(cEffect) }
     },
     effectDescription() {
-        return "which increases the core effect by +" + format(player.b.points) + " and " + format(player.b.lifeForce) + " total life force (+" + format(this.effect()) + " per second)"
+        return "and " + format(player.b.lifeForce) + " total life force (+" + format(this.effect().lifeForceGain) + " per second) which increases the core effect by +" + format(this.effect().coreEffect)
     },
     update(diff) { // Called every tick, to update the layer
         if (player[this.layer].points.gte(1)) {
-            let gain = this.effect()
+            let gain = this.effect().lifeForceGain
 
             player[this.layer].lifeForce = player[this.layer].lifeForce.add(gain.times(diff))
         }
@@ -37,7 +41,7 @@ addLayer("b", {
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.85, // Prestige currency exponent
     base: 0.5, // Base for the cost calculation
-    row: 1, // Row the layer is in on the tree (0 is the first row)
+    row: 2, // Row the layer is in on the tree (0 is the first row)
     branches: ["c"], // This layer is a branch of the core layer
     layerShown() { return player.c.milestones.includes("1") || player.a.achievements.includes("16") }, // Show the layer if you have at least 5 point
     doReset(resettingLayer) { // What happens when you reset this layer)
@@ -56,9 +60,9 @@ addLayer("b", {
     },
     upgrades: {
         11: {
-            title: "Exercise",
+            title: "Push-ups",
             description: "Increase life force gain by mana",
-            cost() { return new Decimal(100) },
+            cost() { return new Decimal(20) },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
@@ -72,7 +76,7 @@ addLayer("b", {
         12: {
             title: "Weight Training",
             description: "Increase life force gain by ★s.",
-            cost() { return new Decimal(200) },
+            cost() { return new Decimal(50) },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
@@ -89,12 +93,26 @@ addLayer("b", {
         13: {
             title: "Sparring",
             description: "Increase life force gain by droplets",
-            cost() { return new Decimal(300) },
+            cost() { return new Decimal(100) },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
             effect() {
                 let effect = player.points.add(1).log10().times(0.07).add(1)
+                return softcap(effect, new Decimal(5.0), 0.3)
+            },
+            effectDisplay() { return format(this.effect()) + "x life force" },
+            unlocked() { return true },
+        },
+        14: {
+            title: "Tai-bo",
+            description: "Increase life force gain by life force",
+            cost() { return new Decimal(150) },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            effect() {
+                let effect = player.b.lifeForce.add(1).log10().times(0.03839).add(1)
                 return softcap(effect, new Decimal(5.0), 0.3)
             },
             effectDisplay() { return format(this.effect()) + "x life force" },
@@ -241,7 +259,7 @@ addLayer("b", {
             },
             unlocked() { return hasUpgrade("b", 23) && hasUpgrade("b", 33) && hasUpgrade("b", 43) },
         },
-        51: {
+        52: {
             title: "Innovate",
             description: "Increase mana gain by life force.",
             cost() { return new Decimal(500000) },
