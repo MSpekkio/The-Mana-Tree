@@ -2,10 +2,12 @@ addLayer("m", {
     name: "merdians", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "🌊", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 4, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
-    startData() { return {
-        unlocked: false, // Whether the layer is unlocked
-		points: new Decimal(0),
-    }},
+    startData() {
+        return {
+            unlocked: false, // Whether the layer is unlocked
+            points: new Decimal(0),
+        }
+    },
     color: "#023b96",
     requires() {
         let req = new Decimal(20000000)
@@ -13,7 +15,7 @@ addLayer("m", {
     }, // Can be a function that takes requirement increases into account
     resource: "meridian ★", // Name of prestige currency
     baseResource: "droplets of mana", // Name of resource prestige is based on
-    baseAmount() {return player.d.points}, // Get the current amount of baseResource
+    baseAmount() { return player.d.points }, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 1.12, // Prestige currency exponent
     base: 0.6,
@@ -60,6 +62,12 @@ addLayer("m", {
             unlocked() { return true },
         },
         4: {
+            requirementDescription: "7★ meridian",
+            effectDescription: "Unlock an additional Meridian Buyable.",
+            done() { return player[this.layer].points.gte(7) },
+            unlocked() { return true },
+        },
+        5: {
             requirementDescription: "10★ meridian",
             effectDescription: "Unlock new droplet upgrades.",
             done() { return player[this.layer].points.gte(10) },
@@ -86,7 +94,7 @@ addLayer("m", {
                 return "Begin crystalizaing mana around your core.\n\
                 Cost: " + format(data.cost) + " droplets of mana\n\
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
-                Adds +" + format(data.effect) + " to base mana gain and capacity.\n"
+                Currently: +" + format(data.effect) + " base mana gain and capacity.\n"
             },
             canAfford() { return player.d.points.gte(this.cost(player[this.layer].buyables[this.id])) },
             buy() {
@@ -116,7 +124,7 @@ addLayer("m", {
                 return "Mana channels improve mana capacity.\n\
                 Cost: " + format(data.cost) + " droplets of mana\n\
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
-                Adds +" + format(data.effect) + " to mana capacity.\n"
+                Currently: +" + format(data.effect) + " mana capacity.\n"
             },
             canAfford() { return player.d.points.gte(this.cost(player[this.layer].buyables[this.id])) },
             buy() {
@@ -124,6 +132,35 @@ addLayer("m", {
                 player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].add(1)
             },
             unlocked() { return hasMilestone("m", 1) },
+            style: { 'height': '222px' },
+            purchaseLimit: new Decimal(20),
+        },
+        13: {
+            title: "Mana Velocity",
+            cost(x) {
+                let base = new Decimal(2.13523)
+                let mult = new Decimal("1e8")
+
+                return base.pow(x).mul(mult)
+            },
+            effect(x) {
+                if (!x || x.lte(0.0)) return new Decimal(1.0)
+                let effect = player.m.points.div(100.0).add(1).pow(x)
+                return effect
+            },
+            display(x) {
+                let data = tmp[this.layer].buyables[this.id]
+                return "Mana Velocity improves droplet gain.\n\
+                Cost: " + format(data.cost) + " droplets of mana\n\
+                Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
+                Currently " + format(data.effect) + "x droplet gain.\n"
+            },
+            canAfford() { return player.d.points.gte(this.cost(player[this.layer].buyables[this.id])) },
+            buy() {
+                player.d.points = player.d.points.sub(this.cost(player[this.layer].buyables[this.id]))
+                player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].add(1)
+            },
+            unlocked() { return hasMilestone("m", 4) },
             style: { 'height': '222px' },
             purchaseLimit: new Decimal(20),
         },

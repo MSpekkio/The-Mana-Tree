@@ -31,6 +31,7 @@ addLayer("d", {
         if (hasUpgrade("b", 41)) mult = mult.times(upgradeEffect("b", 41))
         if (hasUpgrade("b", 44)) mult = mult.times(upgradeEffect("b", 44).gain)
         if (hasUpgrade("d", 41)) mult = mult.times(upgradeEffect("d", 41))
+        mult = mult.times(buyableEffect("m", 13))
 
         return mult
     },
@@ -228,10 +229,10 @@ addLayer("d", {
         //unlocked by 10 Meridans
         41: {
             title: "Mana Compression",
-            description: "Increase droplet gain, mana gain and cap by 40%.",
-            cost() { return new Decimal("1e11") },
+            description: "Increase droplet gain, mana gain and cap by 50%.",
+            cost() { return new Decimal("5e10") },
             effect() {
-                let effect = new Decimal(1.40)
+                let effect = new Decimal(1.50)
                 if (hasUpgrade("d", 42)) effect = effect.times(upgradeEffect("d", 42))
                 if (hasUpgrade("d", 43)) effect = effect.times(upgradeEffect("d", 43))
                 if (hasUpgrade("d", 44)) effect = effect.times(upgradeEffect("d", 44))
@@ -243,43 +244,43 @@ addLayer("d", {
         },
         42: {
             title: "Squeeze I",
-            description: "Increase 'Mana Compression' effect by 40%",
-            cost() { return new Decimal("1.1e11") },
+            description: "Increase 'Mana Compression' effect by 50%",
+            cost() { return new Decimal("7.5e10") },
             effect() {
-                let effect = new Decimal(1.40)
+                let effect = new Decimal(1.50)
                 return effect
             },
-            unlocked() { return hasMilestone("m", 4) && hasUpgrade("d", 41) },
+            unlocked() { return hasMilestone("m", 5) && hasUpgrade("d", 41) },
         },
         43: {
             title: "Squeeze II",
-            description: "Increase 'Mana Compression' effect by 40%",
-            cost() { return new Decimal("1.2e11") },
+            description: "Increase 'Mana Compression' effect by 50%",
+            cost() { return new Decimal("10e10") },
             effect() {
-                let effect = new Decimal(1.40)
+                let effect = new Decimal(1.50)
                 return effect
             },
-            unlocked() { return hasMilestone("m", 4) && hasUpgrade("d", 42) },
+            unlocked() { return hasMilestone("m", 5) && hasUpgrade("d", 42) },
         },
         44: {
             title: "Squeeze III",
-            description: "Increase 'Mana Compression' effect by 40%",
-            cost() { return new Decimal("1.3e11") },
+            description: "Increase 'Mana Compression' effect by 50%",
+            cost() { return new Decimal("12.5e10") },
             effect() {
-                let effect = new Decimal(1.40)
+                let effect = new Decimal(1.50)
                 return effect
             },
-            unlocked() { return hasMilestone("m", 4) && hasUpgrade("d", 43) },
+            unlocked() { return hasMilestone("m", 5) && hasUpgrade("d", 43) },
         },
         45: {
             title: "Squeeze IV",
-            description: "Increase 'Mana Compression' effect by 40%",
-            cost() { return new Decimal("1.4e11") },
+            description: "Increase 'Mana Compression' effect by 50%",
+            cost() { return new Decimal("15e10") },
             effect() {
-                let effect = new Decimal(1.40)
+                let effect = new Decimal(1.50)
                 return effect
             },
-            unlocked() { return hasMilestone("m", 4) && hasUpgrade("d", 44) },
+            unlocked() { return hasMilestone("m", 5) && hasUpgrade("d", 44) },
         },
 
     }

@@ -2,10 +2,12 @@ addLayer("c", {
     name: "core", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "🔥", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 2, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
-    startData() { return {
-        unlocked: false, // Whether the layer is unlocked
-		points: new Decimal(0),
-    }},
+    startData() {
+        return {
+            unlocked: false, // Whether the layer is unlocked
+            points: new Decimal(0),
+        }
+    },
     color: "#ed07e5",
     requires() {
         let req = new Decimal(20000)
@@ -18,10 +20,10 @@ addLayer("c", {
         }
         return effect
     },
-    effectDescription() { return "which multiplies mana gain and cap by "+format(this.effect()) },
+    effectDescription() { return "which multiplies mana gain and cap by " + format(this.effect()) },
     resource: "core ★", // Name of prestige currency
     baseResource: "droplets of mana", // Name of resource prestige is based on
-    baseAmount() {return player.d.points}, // Get the current amount of baseResource
+    baseAmount() { return player.d.points }, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 1.5, // Prestige currency exponent
     base: 0.5,
@@ -40,7 +42,7 @@ addLayer("c", {
     },
     getNextAt(canMax) {
         if (player[this.layer].points.lt(10)) return getNextAt(this.layer, canMax, useType = "static")
-            return new Decimal(Number.POSITIVE_INFINITY);
+        return new Decimal(Number.POSITIVE_INFINITY);
     },
     milestones: {
         0: {
@@ -68,7 +70,7 @@ addLayer("c", {
             unlocked() { return true },
         },
     },
-    upgrades:{
+    upgrades: {
         11: {
             title: "Qi Condensation",
             description: "Unlock your Qi",

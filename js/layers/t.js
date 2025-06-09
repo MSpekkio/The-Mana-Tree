@@ -20,7 +20,7 @@ addLayer("t", {
     row: 0,
     effect() { // calculate Location bonus
         let effect = new Decimal(1)
-        
+
         if (hasUpgrade("t", "12")) effect = upgradeEffect("t", "11")
         if (hasUpgrade("t", "22")) effect = upgradeEffect("t", "22")
         return effect
@@ -65,7 +65,7 @@ addLayer("t", {
             cost: new Decimal(1600),
             amount: new Decimal(20),
             display() { return "Purchase twenty spirit stones.<br>Cost: " + format(this.cost) + " mana" },
-            unlocked() { return hasMilestone("c", 1) },
+            unlocked() { return hasMilestone("c", 1) && !hasMilestone("m", 3)},
             canClick() { return player.points.gte(this.cost) },
             onClick() {
                 let cost = this.cost
@@ -82,6 +82,22 @@ addLayer("t", {
             amount: new Decimal(100),
             display() { return "Purchase one hundred spirit stones.<br>Cost: " + format(this.cost) + " mana" },
             unlocked() { return hasMilestone("b", 0) },
+            canClick() { return player.points.gte(this.cost) },
+            onClick() {
+                let cost = this.cost
+                if (player.points.gte(cost)) {
+                    player.points = player.points.sub(cost)
+                    player[this.layer].points = player[this.layer].points.add(this.amount)
+                    player[this.layer].total = player[this.layer].points.add(this.amount)
+                }
+            },
+        },
+        15: {
+            title: "Spirit Stone x1000",
+            cost: new Decimal(80000),
+            amount: new Decimal(1000),
+            display() { return "Purchase one thousand spirit stones.<br>Cost: " + format(this.cost) + " mana" },
+            unlocked() { return hasMilestone("m", 3) },
             canClick() { return player.points.gte(this.cost) },
             onClick() {
                 let cost = this.cost

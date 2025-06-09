@@ -15,7 +15,7 @@ addLayer("b", {
         if (player[this.layer].points.lt(1)) return { lifeForceGain: new Decimal(0), coreEffect: new Decimal(0) }
         let lfGain = new Decimal(2).pow(player[this.layer].points.sub(1))
         if (hasUpgrade("b", 15)) lfGain = lfGain.add(upgradeEffect("b", 15))
-        
+
         if (hasUpgrade("b", 11)) lfGain = lfGain.times(upgradeEffect("b", 11))
         if (hasUpgrade("b", 12)) lfGain = lfGain.times(upgradeEffect("b", 12))
         if (hasUpgrade("b", 13)) lfGain = lfGain.times(upgradeEffect("b", 13))
@@ -54,12 +54,12 @@ addLayer("b", {
     doReset(resettingLayer) { // What happens when you reset this layer)
         if (layers[resettingLayer].row == this.row) this.lifeForce = new Decimal(0)
         if (layers[resettingLayer].row <= this.row) return
-        
+
         doLayerReset(this.layer, resettingLayer)
     },
     canReset() {
         if (player[this.layer].points.lt(10)) {
-            return tmp[this.layer].baseAmount.gte(tmp[this.layer].nextAt) 
+            return tmp[this.layer].baseAmount.gte(tmp[this.layer].nextAt)
         }
         return false;
     },
@@ -67,7 +67,7 @@ addLayer("b", {
         if (player[this.layer].points.lt(10)) return getResetGain(this.layer, useType = "static")
         return new Decimal(0);
     },
-    getNextAt(canMax){
+    getNextAt(canMax) {
         if (player[this.layer].points.lt(10)) return getNextAt(this.layer, canMax, useType = "static")
         return new Decimal(Number.POSITIVE_INFINITY);
     },
@@ -363,20 +363,20 @@ addLayer("b", {
         },
         44: {
             title: "Reap the Remains",
-            description: "Droplet gain reduced by 25%, but mana cap is tripled.",
-            cost() { return new Decimal("10e9") },
+            description: "Droplet gain reduced by 15%, but mana cap is tripled.",
+            cost() { return new Decimal("2e9") },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
             effect() {
-                return { gain: new Decimal(0.75), cap: new Decimal(3.0) }
+                return { gain: new Decimal(0.85), cap: new Decimal(3.0) }
             },
             unlocked() { return hasMilestone("m", 2) },
         },
         45: {
             title: "The Farmer",
             description: "Mana dropoff is increased, but mana cap is tripled.",
-            cost() { return new Decimal("20e9") },
+            cost() { return new Decimal("4e9") },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
@@ -388,7 +388,7 @@ addLayer("b", {
         53: {
             title: "Integrate Meridians",
             description: "'Crystalize Mana' effect is increased by body ★s.",
-            cost() { return new Decimal("50e9") },
+            cost() { return new Decimal("8e9") },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
@@ -397,7 +397,7 @@ addLayer("b", {
         54: {
             title: "Integrate Mana Channels",
             description: "'Carve Mana Channel' effect is increased by body ★s.",
-            cost() { return new Decimal("75e9") },
+            cost() { return new Decimal("16e9") },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
@@ -405,8 +405,8 @@ addLayer("b", {
         },
         55: {
             title: "Bodily Perfection",
-            description: "Merdian ★s increase core effect.",
-            cost() { return new Decimal("100e9") },
+            description: "Meridian ★s increase core effect.",
+            cost() { return new Decimal("25e9") },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",

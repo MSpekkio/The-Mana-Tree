@@ -65,12 +65,12 @@ addLayer("a", {
         },
         18: {
             name: "Read a book",
-            done() { return  hasUpgrade("t", 31) && hasUpgrade("t", 32) && hasUpgrade("t", 33) },
+            done() { return hasUpgrade("t", 31) && hasUpgrade("t", 32) && hasUpgrade("t", 33) },
             tooltip: "Sound mind in sound body",
         },
         19: {
             name: "Make something new",
-            done() { return hasUpgrade("b", 51) && hasUpgrade("b", 52)},
+            done() { return hasUpgrade("b", 51) && hasUpgrade("b", 52) },
             tooltip: "Be more than the sum of your parts",
         },
         21: {
