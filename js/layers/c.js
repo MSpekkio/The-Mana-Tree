@@ -25,7 +25,7 @@ addLayer("c", {
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 1.5, // Prestige currency exponent
     base: 0.5,
-    row: 2, // Row the layer is in on the tree (0 is the first row)
+    row: 1, // Row the layer is in on the tree (0 is the first row)
     branches: ["d"], // This layer is a branch of the drops layer
     layerShown() { return hasUpgrade("d", 35) || player.a.achievements.includes(15) }, // Show the layer if you have at least 5 point
     canReset() {
@@ -40,11 +40,12 @@ addLayer("c", {
     },
     getNextAt(canMax) {
         if (player[this.layer].points.lt(10)) return getNextAt(this.layer, canMax, useType = "static")
+            return new Decimal(Number.POSITIVE_INFINITY);
     },
     milestones: {
         0: {
             requirementDescription: "1★ core",
-            effectDescription: "Keep all travel upgrades on star reset.",
+            effectDescription: "Keep all travel upgrades on ★ reset.",
             done() { return player[this.layer].points.gte(1) },
             unlocked() { return true },
         },
@@ -56,9 +57,26 @@ addLayer("c", {
         },
         2: {
             requirementDescription: "5★ core",
-            effectDescription: "Unlock Core Meridans",
+            effectDescription: "Unlock Mana Meridans",
             done() { return player[this.layer].points.gte(5) },
             unlocked() { return true },
+        },
+        3: {
+            requirementDescription: "10★ core",
+            effectDescription: "Keep ★ milestones on reset and unlock a core upgrade.",
+            done() { return player[this.layer].points.gte(10) },
+            unlocked() { return true },
+        },
+    },
+    upgrades:{
+        11: {
+            title: "Qi Condensation",
+            description: "Unlock your Qi",
+            cost: new Decimal("3e12"),
+            currencyDisplayName: "droplets of mana",
+            currencyInternalName: "points",
+            currencyLayer: "d",
+            unlocked() { return hasMilestone("c", 3) || player.a.achievements.includes(24) },
         },
     },
 })

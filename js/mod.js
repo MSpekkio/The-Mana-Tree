@@ -18,7 +18,8 @@ let VERSION = {
 // If you change anything in the game, make sure to keep it up to date
 let changelog = `<h1>Changelog:</h1><br>
     <h3>v0.3</h3> - Mo' Mana, Mo' Problems<br>
-		-  <br>
+		- Added Mana Meridians layer
+        - 15 new upgrades to discover <br>
     <h3>v0.2</h3> - Oh God, it's all so broken<br>
 		- Bug fixes, no new gameplay. <br>
 	<h3>v0.1</h3> - The bare minimum<br>
@@ -62,22 +63,31 @@ function getPointGen() {
     if (hasUpgrade("d", 33)) gain = gain.times(upgradeEffect("d", 33))
     if (player.c.points.gte(1)) gain = gain.times(tmp.c.effect)
     if (hasUpgrade("b", 21)) gain = gain.times(upgradeEffect("b", 21))
+    if (hasUpgrade("d", 41)) gain = gain.times(upgradeEffect("d", 41))
 
     let cap = new Decimal(100)
     cap = cap.add(buyableEffect("m", 11)) // base cap
+    if (hasUpgrade("b", 24) && hasUpgrade("d", 11)) cap = cap.add(upgradeEffect("b", 24))
 
     if (hasUpgrade("t", 11)) cap = cap.times(upgradeEffect("t", 11))
     if (hasUpgrade("t", 21)) cap = cap.times(upgradeEffect("t", 21))
     if (hasUpgrade("b", 31)) cap = cap.times(upgradeEffect("b", 31))
     if (player.c.points.gte(1)) cap = cap.times(tmp.c.effect)
+    if (hasUpgrade("b", 44)) cap = cap.times(upgradeEffect("b", 44).cap)
+    if (hasUpgrade("b", 45)) cap = cap.times(upgradeEffect("b", 45).cap)
 
     cap = cap.add(buyableEffect("m", 12)) //final cap
+
+    if (hasUpgrade("d", 41)) cap = cap.times(upgradeEffect("d", 41))
 
     player.manaCap = cap
 
     if (player.points.gte(cap)) {
         //1 / (x / 100)^3
-        let reduction = player.points.div(cap).pow(3)
+        let reductionPow = new Decimal(3)
+        if (hasUpgrade("b", 45)) reductionPow = reductionPow.add(upgradeEffect("b", 45).reductionPow)
+
+        let reduction = player.points.div(cap).pow(reductionPow)
         if (reduction.lte(1)) reduction = new Decimal(1)
         gain = gain.div(reduction)
         if (gain.lte(1.0)) gain = new Decimal(0)
@@ -100,7 +110,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-    return player.c.points.gte(10.0)
+    return hasUpgrade("c", 11)
 }
 
 // Less important things beyond this point!

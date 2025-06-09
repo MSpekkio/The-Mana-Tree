@@ -14,14 +14,21 @@ addLayer("b", {
     effect() {
         if (player[this.layer].points.lt(1)) return { lifeForceGain: new Decimal(0), coreEffect: new Decimal(0) }
         let lfGain = new Decimal(2).pow(player[this.layer].points.sub(1))
+        if (hasUpgrade("b", 15)) lfGain = lfGain.add(upgradeEffect("b", 15))
+        
         if (hasUpgrade("b", 11)) lfGain = lfGain.times(upgradeEffect("b", 11))
         if (hasUpgrade("b", 12)) lfGain = lfGain.times(upgradeEffect("b", 12))
         if (hasUpgrade("b", 13)) lfGain = lfGain.times(upgradeEffect("b", 13))
         if (hasUpgrade("b", 14)) lfGain = lfGain.times(upgradeEffect("b", 14))
         if (hasUpgrade("b", 32)) lfGain = lfGain.pow(upgradeEffect("b", 32))
+        if (hasUpgrade("b", 25)) lfGain = lfGain.times(upgradeEffect("b", 25))
+        if (hasUpgrade("b", 35)) lfGain = lfGain.times(upgradeEffect("b", 35))
 
         let cBase = player.b.points
-        let cEffect = player.b.lifeForce.add(1).log10().times(0.005)
+        let cEffectMult = new Decimal(0.006)
+        if (hasUpgrade("b", 34)) cEffectMult = cEffectMult.times(upgradeEffect("b", 34))
+        if (hasUpgrade("b", 55)) cBase = cBase.add(player.m.points)
+        let cEffect = player.b.lifeForce.add(1).log10().times(cEffectMult)
 
         return { lifeForceGain: lfGain, coreEffect: cBase.add(cEffect) }
     },
@@ -41,8 +48,8 @@ addLayer("b", {
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.85, // Prestige currency exponent
     base: 0.5, // Base for the cost calculation
-    row: 2, // Row the layer is in on the tree (0 is the first row)
-    branches: ["c"], // This layer is a branch of the core layer
+    row: 1, // Row the layer is in on the tree (0 is the first row)
+    branches: ["d", "c"], // This layer is a branch of the core layer
     layerShown() { return hasMilestone("c", 1) || player.a.achievements.includes(16) }, // Show the layer if you have at least 5 point
     doReset(resettingLayer) { // What happens when you reset this layer)
         if (layers[resettingLayer].row == this.row) this.lifeForce = new Decimal(0)
@@ -98,10 +105,10 @@ addLayer("b", {
                 let effectivepoints = player[this.layer].points
                 if (hasUpgrade("b", 51)) effectivepoints = effectivepoints.times(2)
 
-                let effect = player.c.points.add(effectivepoints)
+                let effect = player.c.points.add(effectivepoints).add(player.m.points)
                 return effect
             },
-            effectDisplay() { return "+" + format(this.effect()) + " life force gain" },
+            effectDisplay() { return format(this.effect()) + "x life force gain" },
             unlocked() { return true },
         },
         13: {
@@ -216,7 +223,7 @@ addLayer("b", {
             },
             unlocked() { return hasUpgrade("t", 32) },
         },
-        //Jin Ro, the Blood Flower
+        //Jin Rou, the Farmer
         41: {
             title: "Planting the brush",
             description: "Increase droplet gain by 3% per body ★.",
@@ -286,6 +293,124 @@ addLayer("b", {
             },
             effectDisplay() { return format(this.effect()) + "x mana gain" },
             unlocked() { return hasUpgrade("b", 23) && hasUpgrade("b", 33) && hasUpgrade("b", 43) },
+        },
+        //unlocked by 3 star meridians
+        //15,24,34,44,53
+        15: {
+            title: "Superhuman Exercise",
+            description: "'Crystalize Mana' also increases base life force gain.",
+            cost() { return new Decimal("15e6") },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            effect() {
+                return buyableEffect("m", 11)
+            },
+            effectDisplay() { return "+" + format(this.effect()) + " life force" },
+            unlocked() { return hasMilestone("m", 2) },
+        },
+        24: {
+            title: "Demon Hound Breath",
+            description: "'Deep breath' effect also increases base mana cap.",
+            cost() { return new Decimal("20e6") },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            effect() {
+                return upgradeEffect("d", 11)
+            },
+            effectDisplay() { return "+" + format(this.effect()) + " mana cap" },
+            unlocked() { return hasMilestone("m", 2) },
+        },
+        25: {
+            title: "Five Fiery Demon Hounds",
+            description: "Core effect increases life force gain at a reduced rate.",
+            cost() { return new Decimal("25e6") },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            effect() {
+                return tmp["c"].effect.ln()
+            },
+            effectDisplay() { return "" + format(this.effect()) + "x life force gain" },
+            unlocked() { return hasMilestone("m", 2) },
+        },
+        34: {
+            title: "Wings of the Sun",
+            description: "Life force's core effect base is increased by 100x",
+            cost() { return new Decimal("40e6") },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            effect() {
+                return new Decimal(100)
+            },
+            effectDisplay() { return format(this.effect()) + "x" },
+            unlocked() { return hasMilestone("m", 2) },
+        },
+        35: {
+            title: "Placid Lake, Sun and Moon Reflected",
+            description: "Increase life force gain by 100x",
+            cost() { return new Decimal("50e6") },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            effect() {
+                return new Decimal(100)
+            },
+            effectDisplay() { return format(this.effect()) + "x" },
+            unlocked() { return hasMilestone("m", 2) },
+        },
+        44: {
+            title: "Reap the Remains",
+            description: "Droplet gain reduced by 25%, but mana cap is tripled.",
+            cost() { return new Decimal("10e9") },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            effect() {
+                return { gain: new Decimal(0.75), cap: new Decimal(3.0) }
+            },
+            unlocked() { return hasMilestone("m", 2) },
+        },
+        45: {
+            title: "The Farmer",
+            description: "Mana dropoff is increased, but mana cap is tripled.",
+            cost() { return new Decimal("20e9") },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            effect() {
+                return { reductionPow: new Decimal(3.0), cap: new Decimal(3.0) }
+            },
+            unlocked() { return hasMilestone("m", 2) },
+        },
+        53: {
+            title: "Integrate Meridians",
+            description: "'Crystalize Mana' effect is increased by body ★s.",
+            cost() { return new Decimal("50e9") },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            unlocked() { return hasMilestone("m", 2) },
+        },
+        54: {
+            title: "Integrate Mana Channels",
+            description: "'Carve Mana Channel' effect is increased by body ★s.",
+            cost() { return new Decimal("75e9") },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            unlocked() { return hasMilestone("m", 2) },
+        },
+        55: {
+            title: "Bodily Perfection",
+            description: "Merdian ★s increase core effect.",
+            cost() { return new Decimal("100e9") },
+            currencyDisplayName: "life force",
+            currencyInternalName: "lifeForce",
+            currencyLayer: "b",
+            unlocked() { return hasMilestone("m", 2) },
         },
 
     }

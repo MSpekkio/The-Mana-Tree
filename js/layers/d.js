@@ -29,6 +29,8 @@ addLayer("d", {
         if (hasUpgrade("d", 31)) mult = mult.times(upgradeEffect("d", 31))
         if (hasUpgrade("b", 12)) mult = mult.times(upgradeEffect("b", 12))
         if (hasUpgrade("b", 41)) mult = mult.times(upgradeEffect("b", 41))
+        if (hasUpgrade("b", 44)) mult = mult.times(upgradeEffect("b", 44).gain)
+        if (hasUpgrade("d", 41)) mult = mult.times(upgradeEffect("d", 41))
 
         return mult
     },
@@ -50,12 +52,16 @@ addLayer("d", {
     doReset(resettingLayer) { // What happens when you reset this layer 
         if (layers[resettingLayer].row <= this.row) return;
 
-        layerDataReset(this.layer);
+        let keep = [];
+        if (hasMilestone("m", 3) && layers[resettingLayer].row == layers["c"].row) { //core, body, meridans
+            keep.push("upgrades");
+        }
+        layerDataReset(this.layer, keep);
 
-        if (layers[resettingLayer].row == layers["c"].row && player.c.milestones.includes("0")) {
-            player[this.layer].upgrades.push("15");
-            player[this.layer].upgrades.push("25");
-            player[this.layer].upgrades.push("35");
+        if (layers[resettingLayer].row == layers["c"].row && hasMilestone("c", 0)) {
+            if (!hasUpgrade("d", 15)) player[this.layer].upgrades.push("15");
+            if (!hasUpgrade("d", 25)) player[this.layer].upgrades.push("25");
+            if (!hasUpgrade("d", 35)) player[this.layer].upgrades.push("35");
         }
     },
     passiveGeneration() {
@@ -217,10 +223,64 @@ addLayer("d", {
             title: "Core of mana",
             description: "Unlock your Core",
             cost: new Decimal(10000),
-            unlocked() { return hasUpgrade("t", "21") },
-            onPurchased() {
-                player.t.unlocked = true
-            },
+            unlocked() { return hasUpgrade("t", "21") || player.a.achievements.includes(15) },
         },
+        //unlocked by 10 Meridans
+        41: {
+            title: "Mana Compression",
+            description: "Increase droplet gain, mana gain and cap by 40%.",
+            cost() { return new Decimal("1e11") },
+            effect() {
+                let effect = new Decimal(1.40)
+                if (hasUpgrade("d", 42)) effect = effect.times(upgradeEffect("d", 42))
+                if (hasUpgrade("d", 43)) effect = effect.times(upgradeEffect("d", 43))
+                if (hasUpgrade("d", 44)) effect = effect.times(upgradeEffect("d", 44))
+                if (hasUpgrade("d", 45)) effect = effect.times(upgradeEffect("d", 45))
+                return effect
+            },
+            effectDisplay() { return format(this.effect()) + "x effect" },
+            unlocked() { return hasMilestone("m", 4) },
+        },
+        42: {
+            title: "Squeeze I",
+            description: "Increase 'Mana Compression' effect by 40%",
+            cost() { return new Decimal("1.1e11") },
+            effect() {
+                let effect = new Decimal(1.40)
+                return effect
+            },
+            unlocked() { return hasMilestone("m", 4) && hasUpgrade("d", 41) },
+        },
+        43: {
+            title: "Squeeze II",
+            description: "Increase 'Mana Compression' effect by 40%",
+            cost() { return new Decimal("1.2e11") },
+            effect() {
+                let effect = new Decimal(1.40)
+                return effect
+            },
+            unlocked() { return hasMilestone("m", 4) && hasUpgrade("d", 42) },
+        },
+        44: {
+            title: "Squeeze III",
+            description: "Increase 'Mana Compression' effect by 40%",
+            cost() { return new Decimal("1.3e11") },
+            effect() {
+                let effect = new Decimal(1.40)
+                return effect
+            },
+            unlocked() { return hasMilestone("m", 4) && hasUpgrade("d", 43) },
+        },
+        45: {
+            title: "Squeeze IV",
+            description: "Increase 'Mana Compression' effect by 40%",
+            cost() { return new Decimal("1.4e11") },
+            effect() {
+                let effect = new Decimal(1.40)
+                return effect
+            },
+            unlocked() { return hasMilestone("m", 4) && hasUpgrade("d", 44) },
+        },
+
     }
 })

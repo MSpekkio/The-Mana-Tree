@@ -17,7 +17,7 @@ addLayer("a", {
     tabFormat: {
         "Achievements": {
             content: [
-                ["display-text", function () { return "Achievements: " + player.a.achievements.length + "/" + (Object.keys(player.a.achievements).length) }],
+                ["display-text", function () { return "Achievements: " + player.a.achievements.length + "/" + (Object.keys(layers["a"].achievements).length - 2) }],
                 ["achievements", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]],
             ],
         },
@@ -73,10 +73,25 @@ addLayer("a", {
             done() { return hasUpgrade("b", 51) && hasUpgrade("b", 52)},
             tooltip: "Be more than the sum of your parts",
         },
-        20: {
+        21: {
+            name: "Perfection I",
+            done() { return player.b.points.gte(10) },
+            tooltip: "Your body has reached ten stars.",
+        },
+        22: {
             name: "Droplets into Rivers",
             done() { return player.m.points.gte(1) },
             tooltip: "Start refining your mana.",
+        },
+        23: {
+            name: "Rivers into Oceans",
+            done() { return player.m.points.gte(10) },
+            tooltip: "Your mana meridians have reached ten stars.",
+        },
+        24: {
+            name: "Oceans into Stars",
+            done() { return player.c.points.gte(10) },
+            tooltip: "Your core has reached ten stars.",
         },
     },
     clickables: {

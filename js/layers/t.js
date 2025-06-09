@@ -7,6 +7,7 @@ addLayer("t", {
         return {
             unlocked: false, // Whether the layer is unlocked
             points: new Decimal(0),
+            manaForPurchases: new Decimal(0),
         }
     },
     color: "#f2c8ae",
@@ -178,5 +179,5 @@ addLayer("t", {
             keep.push("upgrades");
         }
         layerDataReset(this.layer, keep);
-    }
+    },
 })
