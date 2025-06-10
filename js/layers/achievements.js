@@ -76,7 +76,7 @@ addLayer("a", {
         21: {
             name: "Perfection I",
             done() { return player.b.points.gte(10) },
-            tooltip: "Your body has reached ten stars.",
+            tooltip: "Your body tempering has reached ten stars.",
         },
         22: {
             name: "Droplets into Rivers",
@@ -92,6 +92,11 @@ addLayer("a", {
             name: "Oceans into Stars",
             done() { return player.c.points.gte(10) },
             tooltip: "Your core has reached ten stars.",
+        },
+        25: {
+            name: "Beyond Mana",
+            done() { return hasUpgrade("c", 11) },
+            tooltip: "You have moved beyond mana.",
         },
     },
     clickables: {

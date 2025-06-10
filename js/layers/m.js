@@ -17,7 +17,7 @@ addLayer("m", {
     baseResource: "droplets of mana", // Name of resource prestige is based on
     baseAmount() { return player.d.points }, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 1.12, // Prestige currency exponent
+    exponent: 1.11, // Prestige currency exponent
     base: 0.6,
     row: 1, // Row the layer is in on the tree (0 is the first row)
     branches: ["d", "c"], // This layer is a branch of the drops layer
@@ -138,7 +138,7 @@ addLayer("m", {
         13: {
             title: "Mana Velocity",
             cost(x) {
-                let base = new Decimal(2.13523)
+                let base = new Decimal(2.11523)
                 let mult = new Decimal("1e8")
 
                 return base.pow(x).mul(mult)
@@ -153,7 +153,7 @@ addLayer("m", {
                 return "Mana Velocity improves droplet gain.\n\
                 Cost: " + format(data.cost) + " droplets of mana\n\
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
-                Currently " + format(data.effect) + "x droplet gain.\n"
+                Currently: " + format(data.effect) + "x droplet gain.\n"
             },
             canAfford() { return player.d.points.gte(this.cost(player[this.layer].buyables[this.id])) },
             buy() {

@@ -312,7 +312,7 @@ addLayer("b", {
         24: {
             title: "Demon Hound Breath",
             description: "'Deep breath' effect also increases base mana cap.",
-            cost() { return new Decimal("20e6") },
+            cost() { return new Decimal("16e6") },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
@@ -325,7 +325,7 @@ addLayer("b", {
         25: {
             title: "Five Fiery Demon Hounds",
             description: "Core effect increases life force gain at a reduced rate.",
-            cost() { return new Decimal("25e6") },
+            cost() { return new Decimal("20e6") },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
