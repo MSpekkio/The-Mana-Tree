@@ -17,7 +17,7 @@ addLayer("m", {
     baseResource: "droplets of mana", // Name of resource prestige is based on
     baseAmount() { return player.d.points }, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 1.11, // Prestige currency exponent
+    exponent: 1.10, // Prestige currency exponent
     base: 0.6,
     row: 1, // Row the layer is in on the tree (0 is the first row)
     branches: ["d", "c"], // This layer is a branch of the drops layer
@@ -91,10 +91,10 @@ addLayer("m", {
             },
             display(x) {
                 let data = tmp[this.layer].buyables[this.id]
-                return "Begin crystalizaing mana around your core.\n\
+                return "Begin crystalizaing mana around your core increases base main gain and cap.\n\
                 Cost: " + format(data.cost) + " droplets of mana\n\
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
-                Currently: +" + format(data.effect) + " base mana gain and capacity.\n"
+                Currently: +" + format(data.effect) + " base mana gain and cap.\n"
             },
             canAfford() { return player.d.points.gte(this.cost(player[this.layer].buyables[this.id])) },
             buy() {
@@ -121,10 +121,10 @@ addLayer("m", {
             },
             display(x) {
                 let data = tmp[this.layer].buyables[this.id]
-                return "Mana channels improve mana capacity.\n\
+                return "Mana Channels improve final mana cap.\n\
                 Cost: " + format(data.cost) + " droplets of mana\n\
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
-                Currently: +" + format(data.effect) + " mana capacity.\n"
+                Currently: +" + format(data.effect) + " mana cap.\n"
             },
             canAfford() { return player.d.points.gte(this.cost(player[this.layer].buyables[this.id])) },
             buy() {

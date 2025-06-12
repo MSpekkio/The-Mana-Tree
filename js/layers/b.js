@@ -392,6 +392,10 @@ addLayer("b", {
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
+            effect() {
+                return player.b.points
+            },
+            effectDisplay() { return format(this.effect()) + "x" },
             unlocked() { return hasMilestone("m", 2) },
         },
         54: {
@@ -401,6 +405,10 @@ addLayer("b", {
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
+            effect() {
+                return player.b.points
+            },
+            effectDisplay() { return format(this.effect()) + "x" },
             unlocked() { return hasMilestone("m", 2) },
         },
         55: {
@@ -410,6 +418,10 @@ addLayer("b", {
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
+            effect() {
+                return player.m.points
+            },
+            effectDisplay() { return "+" + format(this.effect()) },
             unlocked() { return hasMilestone("m", 2) },
         },
 

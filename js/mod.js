@@ -18,10 +18,14 @@ let VERSION = {
 // If you change anything in the game, make sure to keep it up to date
 let changelog = `<h1>Changelog:</h1><br>
     <h3>v0.3</h3> - Mo' Mana, Mo' Problems<br>
-		- Added Mana Meridians layer
-        - 15 new upgrades to discover <br>
+        - Core can now be advanced past 5 stars.<br>
+		- Added Mana Meridians layer.<br>
+        - Unlock exciting droplet automation.<br>
+        - 15 new upgrades to discover.<br>
+        <br>
     <h3>v0.2</h3> - Oh God, it's all so broken<br>
-		- Bug fixes, no new gameplay. <br>
+		- Bug fixes, no new gameplay.<br>
+        <br>
 	<h3>v0.1</h3> - The bare minimum<br>
 		- 4 layers.<br>
 		- 38 upgrades.<br>

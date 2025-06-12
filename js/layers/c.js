@@ -18,6 +18,9 @@ addLayer("c", {
         if (player.b.points.gte(1)) {
             effect = effect.add(tmp.b.effect.coreEffect)
         }
+        if (hasUpgrade("b", 55)) {
+            effect = effect.add(upgradeEffect("b", 55))
+        }
         return effect
     },
     effectDescription() { return "which multiplies mana gain and cap by " + format(this.effect()) },
@@ -65,7 +68,7 @@ addLayer("c", {
         },
         3: {
             requirementDescription: "10★ core",
-            effectDescription: "Keep ★ milestones on reset and unlock a core upgrade.",
+            effectDescription: "Unlock a core upgrade.",
             done() { return player[this.layer].points.gte(10) },
             unlocked() { return true },
         },

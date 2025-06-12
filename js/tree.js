@@ -11,9 +11,13 @@ var layoutInfo = {
 
 // A "ghost" layer which offsets other layers in the tree
 addNode("blank1", {
-    layerShown: "ghost",
     position: 3,
-    row: 0
+    row: 0,
+    layerShown() {
+        if (hasMilestone("c", 2) || player.a.achievements.includes(20))
+            return "ghost"
+        return false;
+    },
 },
 )
 

@@ -230,7 +230,7 @@ addLayer("d", {
         41: {
             title: "Mana Compression",
             description: "Increase droplet gain, mana gain and cap by 50%.",
-            cost() { return new Decimal("5e10") },
+            cost() { return new Decimal("2e10") },
             effect() {
                 let effect = new Decimal(1.50)
                 if (hasUpgrade("d", 42)) effect = effect.times(upgradeEffect("d", 42))
@@ -239,13 +239,13 @@ addLayer("d", {
                 if (hasUpgrade("d", 45)) effect = effect.times(upgradeEffect("d", 45))
                 return effect
             },
-            effectDisplay() { return format(this.effect()) + "x effect" },
-            unlocked() { return hasMilestone("m", 4) },
+            effectDisplay() { return format(this.effect()) + "x droplet gain" },
+            unlocked() { return hasMilestone("m", 5) },
         },
         42: {
             title: "Squeeze I",
             description: "Increase 'Mana Compression' effect by 50%",
-            cost() { return new Decimal("7.5e10") },
+            cost() { return new Decimal("4e10") },
             effect() {
                 let effect = new Decimal(1.50)
                 return effect
@@ -255,7 +255,7 @@ addLayer("d", {
         43: {
             title: "Squeeze II",
             description: "Increase 'Mana Compression' effect by 50%",
-            cost() { return new Decimal("10e10") },
+            cost() { return new Decimal("6e10") },
             effect() {
                 let effect = new Decimal(1.50)
                 return effect
@@ -265,7 +265,7 @@ addLayer("d", {
         44: {
             title: "Squeeze III",
             description: "Increase 'Mana Compression' effect by 50%",
-            cost() { return new Decimal("12.5e10") },
+            cost() { return new Decimal("8e10") },
             effect() {
                 let effect = new Decimal(1.50)
                 return effect
@@ -275,7 +275,7 @@ addLayer("d", {
         45: {
             title: "Squeeze IV",
             description: "Increase 'Mana Compression' effect by 50%",
-            cost() { return new Decimal("15e10") },
+            cost() { return new Decimal("10e10") },
             effect() {
                 let effect = new Decimal(1.50)
                 return effect
