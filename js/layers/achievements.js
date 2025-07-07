@@ -98,6 +98,21 @@ addLayer("a", {
             done() { return hasUpgrade("c", 11) },
             tooltip: "You have moved beyond mana.",
         },
+        26: {
+            name: "Heavens",
+            done() { return player.qisky.points.gte(1) },
+            tooltip: "Your core soars.",
+        },
+        27: {
+            name: "Flood",
+            done() { return player.qiocean.points.gte(1) },
+            tooltip: "Your core flows.",
+        },
+        28: {
+            name: "Firmament",
+            done() { return false },
+            tooltip: "Your core hardens.",
+        },
     },
     clickables: {
         11: {

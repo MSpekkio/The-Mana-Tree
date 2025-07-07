@@ -32,6 +32,8 @@ addLayer("d", {
         if (hasUpgrade("b", 44)) mult = mult.times(upgradeEffect("b", 44).gain)
         if (hasUpgrade("d", 41)) mult = mult.times(upgradeEffect("d", 41))
         mult = mult.times(buyableEffect("m", 13))
+        if (hasUpgrade("qiocean", 21)) mult = mult.times(upgradeEffect("qiocean", 21))
+        if (hasUpgrade("qiocean", 41)) mult = mult.times(upgradeEffect("qiocean", 41))
 
         return mult
     },

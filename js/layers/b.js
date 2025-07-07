@@ -23,7 +23,7 @@ addLayer("b", {
         if (hasUpgrade("b", 32)) lfGain = lfGain.pow(upgradeEffect("b", 32))
         if (hasUpgrade("b", 25)) lfGain = lfGain.times(upgradeEffect("b", 25))
         if (hasUpgrade("b", 35)) lfGain = lfGain.times(upgradeEffect("b", 35))
-        if (hasUpgrade("qiocean", 12)) lfGain = lfGain.times(upgradeEffect("qiocean", 12))
+        if (hasUpgrade("qiocean", 11)) lfGain = lfGain.times(upgradeEffect("qiocean", 11))
 
         let cBase = player.b.points
         let cEffectMult = new Decimal(0.006)

@@ -2,7 +2,7 @@ let modInfo = {
     name: "The Mana Tree",
     author: "MSpekkio",
     pointsName: "mana",
-    modFiles: ["layers/qiocean.js", "layers/m.js", "layers/t.js", "layers/d.js", "layers/c.js", "layers/b.js", "layers/achievements.js", "tree.js"],
+    modFiles: ["layers/qisky.js", "layers/qiocean.js", "layers/m.js", "layers/t.js", "layers/d.js", "layers/c.js", "layers/b.js", "layers/achievements.js", "tree.js"],
 
     discordName: "",
     discordLink: "",
@@ -85,6 +85,7 @@ function getPointGen() {
     cap = cap.add(buyableEffect("m", 12)) //final cap
 
     if (hasUpgrade("d", 41)) cap = cap.times(upgradeEffect("d", 41))
+    cap = cap.times(tmp.qisky.effect) //qisky mana cap
 
     player.manaCap = cap
 
@@ -135,6 +136,7 @@ function maxTickLength() {
 // you can cap their current resources with this.
 function fixOldSave(oldVersion) {
     console.log(oldVersion)
+
     if (oldVersion === "0.1") {
         if (player.b.points.gte(10)) player.b.points = new Decimal(10)
         if (player.c.points.gte(5)) player.c.points = new Decimal(5)
