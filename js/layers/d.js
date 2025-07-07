@@ -54,12 +54,12 @@ addLayer("d", {
         if (layers[resettingLayer].row <= this.row) return;
 
         let keep = [];
-        if (hasMilestone("m", 3) && layers[resettingLayer].row == layers["c"].row) { //core, body, meridans
+        if (hasMilestone("m", 3)) {
             keep.push("upgrades");
         }
         layerDataReset(this.layer, keep);
 
-        if (layers[resettingLayer].row == layers["c"].row && hasMilestone("c", 0)) {
+        if (!hasMilestone("m", 3) && layers[resettingLayer].row == layers["c"].row && hasMilestone("c", 0)) {
             if (!hasUpgrade("d", 15)) player[this.layer].upgrades.push("15");
             if (!hasUpgrade("d", 25)) player[this.layer].upgrades.push("25");
             if (!hasUpgrade("d", 35)) player[this.layer].upgrades.push("35");
@@ -224,9 +224,9 @@ addLayer("d", {
             title: "Core of mana",
             description: "Unlock your Core",
             cost: new Decimal(10000),
-            unlocked() { return hasUpgrade("t", "21") || player.a.achievements.includes(15) },
+            unlocked() { return hasUpgrade("t", "21") || player.a.achievements.includes("15") },
         },
-        //unlocked by 10 Meridans
+        //unlocked by 10 Meridians
         41: {
             title: "Mana Compression",
             description: "Increase droplet gain, mana gain and cap by 50%.",
@@ -239,7 +239,7 @@ addLayer("d", {
                 if (hasUpgrade("d", 45)) effect = effect.times(upgradeEffect("d", 45))
                 return effect
             },
-            effectDisplay() { return format(this.effect()) + "x droplet gain" },
+            effectDisplay() { return format(this.effect()) + "x" },
             unlocked() { return hasMilestone("m", 5) },
         },
         42: {

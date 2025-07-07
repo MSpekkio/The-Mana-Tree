@@ -20,8 +20,14 @@ addLayer("m", {
     exponent: 1.10, // Prestige currency exponent
     base: 0.6,
     row: 1, // Row the layer is in on the tree (0 is the first row)
-    branches: ["d", "c"], // This layer is a branch of the drops layer
-    layerShown() { return hasMilestone("c", 2) || player.a.achievements.includes(20) },
+    branches: ["d", "c"],
+    layerShown() { return hasMilestone("c", 2) || player.a.achievements.includes("20") },
+    doReset(resettingLayer) { // What happens when you reset this layer)
+        if (layers[resettingLayer].row <= this.row) return
+        if (layers[resettingLayer].row <= 2) return //qi
+
+        doLayerReset(this.layer, resettingLayer)
+    },
     canReset() {
         if (player[this.layer].points.lt(10)) {
             return tmp[this.layer].baseAmount.gte(tmp[this.layer].nextAt)
@@ -57,7 +63,7 @@ addLayer("m", {
         },
         3: {
             requirementDescription: "5★ meridian",
-            effectDescription: "Keep droplet upgrades on ★ reset.",
+            effectDescription: "Keep droplet upgrades on reset.",
             done() { return player[this.layer].points.gte(5) },
             unlocked() { return true },
         },

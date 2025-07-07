@@ -1,5 +1,5 @@
 addLayer("a", {
-    name: "achievements", // This is optional, only used in a few places, If absent it just uses the layer id.
+    name: "a", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "A", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() {
@@ -18,12 +18,12 @@ addLayer("a", {
         "Achievements": {
             content: [
                 ["display-text", function () { return "Achievements: " + player.a.achievements.length + "/" + (Object.keys(layers["a"].achievements).length - 2) }],
-                ["achievements", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]],
+                "achievements",
             ],
         },
         "Savebank": {
             content: [
-                ["clickables", [1, 2, 3]],
+                "clickables",
             ],
         },
     },

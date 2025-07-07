@@ -21,6 +21,9 @@ addLayer("c", {
         if (hasUpgrade("b", 55)) {
             effect = effect.add(upgradeEffect("b", 55))
         }
+        if (player.qiocean.unlocked) {
+            effect = effect.times(tmp.qiocean.effect)
+        }
         return effect
     },
     effectDescription() { return "which multiplies mana gain and cap by " + format(this.effect()) },
@@ -32,7 +35,13 @@ addLayer("c", {
     base: 0.5,
     row: 1, // Row the layer is in on the tree (0 is the first row)
     branches: ["d"], // This layer is a branch of the drops layer
-    layerShown() { return hasUpgrade("d", 35) || player.a.achievements.includes(15) }, // Show the layer if you have at least 5 point
+    layerShown() { return hasUpgrade("d", 35) || player.a.achievements.includes("15") }, // Show the layer if you have at least 5 point
+    doReset(resettingLayer) { // What happens when you reset this layer)
+        if (layers[resettingLayer].row <= this.row) return
+        if (layers[resettingLayer].row <= 2) return //qi
+
+        doLayerReset(this.layer, resettingLayer)
+    },
     canReset() {
         if (player[this.layer].points.lt(10)) {
             return tmp[this.layer].baseAmount.gte(tmp[this.layer].nextAt)
@@ -50,7 +59,7 @@ addLayer("c", {
     milestones: {
         0: {
             requirementDescription: "1★ core",
-            effectDescription: "Keep all travel upgrades on ★ reset.",
+            effectDescription: "Keep all travel upgrades on reset.",
             done() { return player[this.layer].points.gte(1) },
             unlocked() { return true },
         },
@@ -81,7 +90,7 @@ addLayer("c", {
             currencyDisplayName: "droplets of mana",
             currencyInternalName: "points",
             currencyLayer: "d",
-            unlocked() { return hasMilestone("c", 3) || player.a.achievements.includes(24) },
+            unlocked() { return hasMilestone("c", 3) || player.a.achievements.includes("24") },
         },
     },
 })

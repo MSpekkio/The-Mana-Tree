@@ -2,7 +2,7 @@ let modInfo = {
     name: "The Mana Tree",
     author: "MSpekkio",
     pointsName: "mana",
-    modFiles: ["layers/m.js", "layers/t.js", "layers/d.js", "layers/c.js", "layers/b.js", "layers/achievements.js", "tree.js"],
+    modFiles: ["layers/qiocean.js", "layers/m.js", "layers/t.js", "layers/d.js", "layers/c.js", "layers/b.js", "layers/achievements.js", "tree.js"],
 
     discordName: "",
     discordLink: "",
@@ -12,11 +12,13 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-    num: "0.3",
-    name: "Mo' Mana, Mo' Problems",
+    num: "0.4",
+    name: "Don't Qi me when I'm down",
 }
 // If you change anything in the game, make sure to keep it up to date
 let changelog = `<h1>Changelog:</h1><br>
+    <h3>v0.4</h3> - Don't Qi me when I'm down<br>
+        - Added 1 new Layer
     <h3>v0.3</h3> - Mo' Mana, Mo' Problems<br>
         - Core can now be advanced past 5 stars.<br>
 		- Added Mana Meridians layer.<br>
@@ -114,7 +116,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-    return hasUpgrade("c", 11)
+    return false
 }
 
 // Less important things beyond this point!

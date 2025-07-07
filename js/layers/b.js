@@ -23,6 +23,7 @@ addLayer("b", {
         if (hasUpgrade("b", 32)) lfGain = lfGain.pow(upgradeEffect("b", 32))
         if (hasUpgrade("b", 25)) lfGain = lfGain.times(upgradeEffect("b", 25))
         if (hasUpgrade("b", 35)) lfGain = lfGain.times(upgradeEffect("b", 35))
+        if (hasUpgrade("qiocean", 12)) lfGain = lfGain.times(upgradeEffect("qiocean", 12))
 
         let cBase = player.b.points
         let cEffectMult = new Decimal(0.006)
@@ -50,10 +51,11 @@ addLayer("b", {
     base: 0.5, // Base for the cost calculation
     row: 1, // Row the layer is in on the tree (0 is the first row)
     branches: ["d", "c"], // This layer is a branch of the core layer
-    layerShown() { return hasMilestone("c", 1) || player.a.achievements.includes(16) }, // Show the layer if you have at least 5 point
+    layerShown() { return hasMilestone("c", 1) || player.a.achievements.includes("16") }, // Show the layer if you have at least 5 point
     doReset(resettingLayer) { // What happens when you reset this layer)
-        if (layers[resettingLayer].row == this.row) this.lifeForce = new Decimal(0)
+        if (layers[resettingLayer].row >= this.row) this.lifeForce = new Decimal(0)
         if (layers[resettingLayer].row <= this.row) return
+        if (layers[resettingLayer].row <= 2) return //qi
 
         doLayerReset(this.layer, resettingLayer)
     },
