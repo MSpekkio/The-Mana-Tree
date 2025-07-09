@@ -209,7 +209,7 @@ addLayer("a", {
             },
             style() {
                 return {
-                    'background-color': "#f2f2ae",
+                    'background-color': "#ed07e5",
                 }
             },
         },

@@ -15,8 +15,8 @@ addLayer("qisky", {
     color: "#bfd9d8",
     requires() {
         let req = new Decimal("1e13")
-        if (player.qisky.unlockOrder && player.qisky.unlockOrder >= 1) req = req.times(3500)
-        if (player.qisky.unlockOrder && player.qisky.unlockOrder >= 2) req = req.times(3500)
+        if (player.qisky.unlockOrder && player.qisky.unlockOrder >= 1) req = req.times(5500)
+        if (player.qisky.unlockOrder && player.qisky.unlockOrder >= 2) req = req.times(7000)
         return req
     },
     layerShown(){ return hasUpgrade("c", 11) || player.a.achievements.includes("25") },
@@ -32,7 +32,7 @@ addLayer("qisky", {
     },
     row: 2,
     branches: ["c"],
-    increaseUnlockOrder: ["qiocean"],//, "qiearth"],
+    increaseUnlockOrder: ["qiocean", "qiearth"],
     doReset(resettingLayer) { // What happens when you reset this layer)
         if (layers[resettingLayer].row > this.row) {
             this.acceleration = new Decimal(0)
@@ -60,10 +60,12 @@ addLayer("qisky", {
         let resist = new Decimal(0.40)
 
         let resistMult = resist.negate().add(1)
-
+        let speed = player[this.layer].speed.add(accel).times(resistMult)
+        if (speed.lt(player[this.layer].speed))
+            speed = player[this.layer].speed
         player[this.layer].acceleration = accel
         player[this.layer].resistance = resist
-        player[this.layer].speed = player[this.layer].speed.add(accel).times(resistMult)
+        player[this.layer].speed = speed
     },
     buyables: {
         

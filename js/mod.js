@@ -2,7 +2,7 @@ let modInfo = {
     name: "The Mana Tree",
     author: "MSpekkio",
     pointsName: "mana",
-    modFiles: ["layers/qisky.js", "layers/qiocean.js", "layers/m.js", "layers/t.js", "layers/d.js", "layers/c.js", "layers/b.js", "layers/achievements.js", "tree.js"],
+    modFiles: ["layers/qiearth.js", "layers/qisky.js", "layers/qiocean.js", "layers/m.js", "layers/t.js", "layers/d.js", "layers/c.js", "layers/b.js", "layers/achievements.js", "tree.js"],
 
     discordName: "",
     discordLink: "",

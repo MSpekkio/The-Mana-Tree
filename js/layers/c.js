@@ -24,7 +24,7 @@ addLayer("c", {
         if (player.qiocean.unlocked) {
             effect = effect.times(tmp.qiocean.effect)
         }
-        return effect
+        return softcap(effect, new Decimal(5000), 0.1)
     },
     effectDescription() { return "which multiplies mana gain and cap by " + format(this.effect()) },
     resource: "core ★", // Name of prestige currency

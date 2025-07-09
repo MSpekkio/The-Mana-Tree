@@ -87,7 +87,7 @@ addLayer("m", {
                 let base = new Decimal(2.432)
                 let mult = new Decimal("1e5")
 
-                return base.pow(x).mul(mult)
+                return base.pow(x).mul(mult).floor()
             },
             effect(x) {
                 if (!x || x.lte(0.0)) return new Decimal(0)
@@ -117,7 +117,7 @@ addLayer("m", {
                 let base = new Decimal(1.43429)
                 let mult = new Decimal("1e5")
 
-                return base.pow(x).mul(mult)
+                return base.pow(x).mul(mult).floor()
             },
             effect(x) {
                 if (!x || x.lte(0.0)) return new Decimal(0)
@@ -144,10 +144,10 @@ addLayer("m", {
         13: {
             title: "Mana Velocity",
             cost(x) {
-                let base = new Decimal(2.11523)
+                let base = new Decimal(2.05523)
                 let mult = new Decimal("1e8")
 
-                return base.pow(x).mul(mult)
+                return base.pow(x).mul(mult).floor()
             },
             effect(x) {
                 if (!x || x.lte(0.0)) return new Decimal(1.0)

@@ -75,6 +75,12 @@ function softcap(value, cap, power = 0.5) {
 		return value.pow(power).times(cap.pow(decimalOne.sub(power)))
 }
 
+function hardcap(value, cap) {
+	if (value.lte(cap)) return value
+	else
+		return cap
+}
+
 // Return true if the layer should be highlighted. By default checks for upgrades only.
 function shouldNotify(layer){
 	for (id in tmp[layer].upgrades){

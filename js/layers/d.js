@@ -107,7 +107,7 @@ addLayer("d", {
             unlocked() { return true },
             effect() {
                 let effect = new Decimal(0.01).times(player[this.layer].total).add(1)
-                return softcap(softcap(effect, new Decimal(2.5), 0.3), new Decimal(5.0), 0.1)
+                return hardcap(softcap(softcap(effect, new Decimal(2.5), 0.3), new Decimal(5.0), 0.1), new Decimal(10.0))
             },
             effectDisplay() { return format(this.effect()) + "x" }
         },
