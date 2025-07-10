@@ -18,7 +18,9 @@ let VERSION = {
 // If you change anything in the game, make sure to keep it up to date
 let changelog = `<h1>Changelog:</h1><br>
     <h3>v0.4</h3> - Don't Qi me when I'm down<br>
-        - Added 1 new Layer
+        - Added 3 new Layer, 4 upgrades and 3 achievements.<br>
+        - Added various softcaps to upgrades and effects.<br>
+        - Spelling errors fixed.<br>
     <h3>v0.3</h3> - Mo' Mana, Mo' Problems<br>
         - Core can now be advanced past 5 stars.<br>
 		- Added Mana Meridians layer.<br>
@@ -70,6 +72,7 @@ function getPointGen() {
     if (player.c.points.gte(1)) gain = gain.times(tmp.c.effect)
     if (hasUpgrade("b", 21)) gain = gain.times(upgradeEffect("b", 21))
     if (hasUpgrade("d", 41)) gain = gain.times(upgradeEffect("d", 41))
+    if (hasUpgrade("qisky", 11)) gain = gain.times(upgradeEffect("qisky", 11))
 
     let cap = new Decimal(100)
     cap = cap.add(buyableEffect("m", 11)) // base cap

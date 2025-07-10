@@ -68,8 +68,10 @@ addLayer("d", {
         }
     },
     passiveGeneration() {
-        if (hasMilestone("m", 0)) return 0.10 // 10% of droplets per second
-        return 0.00 // no passive generation
+        let gen = 0.00 // no passive generation
+        if (hasMilestone("m", 0)) gen = gen + 0.10 // 10% of droplets per second
+        if (hasUpgrade("qiocean", 12)) gen = gen + 0.10 // 10% of droplets per second
+        return gen
     },
     upgrades: {
         11: {
@@ -148,7 +150,7 @@ addLayer("d", {
             unlocked() { return hasUpgrade("t", "11") },
             effect() {
                 let effect = new Decimal(player.points).add(1).log10().times(0.13).add(1)
-                return softcap(softcap(effect, new Decimal(2.5), new Decimal(0.3)), new Decimal(10.0), 0.3)
+                return softcap(softcap(effect, new Decimal(1.80), new Decimal(0.3)), new Decimal(3.0), 0.3)
             },
             effectDisplay() { return format(this.effect()) + "x" }
         },
@@ -198,7 +200,7 @@ addLayer("d", {
         },
         33: {
             title: "Spirit of mana",
-            description: "Increase main gain by droplets.",
+            description: "Increase mana gain by droplets.",
             cost: new Decimal(5000),
             unlocked() { return hasUpgrade("t", "21") },
             effect() {

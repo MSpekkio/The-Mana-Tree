@@ -91,7 +91,7 @@ addLayer("b", {
             currencyLayer: "b",
             effect() {
                 let effect = player.points.add(1).log10().times(0.06).add(1)
-                return softcap(effect, new Decimal(5.0), 0.3)
+                return softcap(effect, new Decimal(2.0), 0.3)
             },
             effectDisplay() { return format(this.effect()) + "x life force" },
             unlocked() { return true },

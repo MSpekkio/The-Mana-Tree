@@ -96,8 +96,8 @@ addLayer("m", {
                 return effect
             },
             display(x) {
-                let data = tmp[this.layer].buyables[this.id]
-                return "Begin crystalizaing mana around your core increases base main gain and cap.\n\
+                const data = tmp[this.layer].buyables[this.id]
+                return "Begin crystalizaing mana around your core increases base mana gain and cap.\n\
                 Cost: " + format(data.cost) + " droplets of mana\n\
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
                 Currently: +" + format(data.effect) + " base mana gain and cap.\n"
@@ -126,7 +126,7 @@ addLayer("m", {
                 return effect
             },
             display(x) {
-                let data = tmp[this.layer].buyables[this.id]
+                const data = tmp[this.layer].buyables[this.id]
                 return "Mana Channels improve final mana cap.\n\
                 Cost: " + format(data.cost) + " droplets of mana\n\
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
@@ -155,7 +155,7 @@ addLayer("m", {
                 return effect
             },
             display(x) {
-                let data = tmp[this.layer].buyables[this.id]
+                const data = tmp[this.layer].buyables[this.id]
                 return "Mana Velocity improves droplet gain.\n\
                 Cost: " + format(data.cost) + " droplets of mana\n\
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\

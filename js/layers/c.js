@@ -71,7 +71,7 @@ addLayer("c", {
         },
         2: {
             requirementDescription: "5★ core",
-            effectDescription: "Unlock Mana Meridans",
+            effectDescription: "Unlock Mana Meridians",
             done() { return player[this.layer].points.gte(5) },
             unlocked() { return true },
         },

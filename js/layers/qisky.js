@@ -44,19 +44,20 @@ addLayer("qisky", {
         doLayerReset(this.layer, resettingLayer)
     },
     effectDescription() {
-        return "and your winds are moving at " + format(player.qisky.speed) + " m/s (" + format(player.qisky.acceleration) + " m/s² with " + format(player.qisky.resistance.times(100)) + "% resistance). \n"+
+        return "and your winds are moving at speed of " + format(player.qisky.speed) + " m/s (" + format(player.qisky.acceleration) + " m/s² with " + format(player.qisky.resistance.times(100)) + "% resistance). \n"+
                 "This increases your mana cap by " + format(this.effect()) + "x"
     },
     effect() {
         let effect = new Decimal(1.0)
         if (player[this.layer].speed.gt(0)) {
-            effect = effect.add(player[this.layer].speed.times(100).log(1.2))
+            effect = effect.add(player[this.layer].speed.log(1.3))
         }
 
-        return softcap(effect, new Decimal(1e3), 0.1)
+        return softcap(effect, new Decimal(15), 0.1)
     },
     update(diff) { // Called every tick, to update the layer
         let accel = new Decimal(player[this.layer].points).times(9.8876)
+
         let resist = new Decimal(0.40)
 
         let resistMult = resist.negate().add(1)
@@ -71,6 +72,17 @@ addLayer("qisky", {
         
     },
     upgrades: {
-       
+        11: {
+            title: "➡️➡️➡️",
+            description: "Sky effect increases mana gain at a reduced rate",
+            cost: new Decimal(5),
+            unlocked() { return true },
+            effect() {
+                return tmp.qisky.effect.ln()
+            },
+            effectDisplay() {
+                return format(this.effect()) + "x"
+            },
+        },
     },
 })
