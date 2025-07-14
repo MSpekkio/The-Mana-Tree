@@ -92,20 +92,21 @@ addLayer("m", {
             effect(x) {
                 if (!x || x.lte(0.0)) return new Decimal(0)
                 let effect = x.add(1).pow(2).add(player.m.points)
-                if (hasUpgrade("b", 53)) effect = effect.times(player.b.points)
+                if (hasUpgrade("b", 54)) effect = effect.times(upgradeEffect("b", 54))
                 return effect
             },
-            display(x) {
+            display() {
                 const data = tmp[this.layer].buyables[this.id]
                 return "Begin crystalizaing mana around your core increases base mana gain and cap.\n\
                 Cost: " + format(data.cost) + " droplets of mana\n\
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
                 Currently: +" + format(data.effect) + " base mana gain and cap.\n"
             },
-            canAfford() { return player.d.points.gte(this.cost(player[this.layer].buyables[this.id])) },
+            canAfford() { return player[this.layer].points.gte(this.cost(player[this.layer].buyables[this.id])) },
             buy() {
-                player.d.points = player.d.points.sub(this.cost(player[this.layer].buyables[this.id]))
-                player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].add(1)
+                const layer = player[this.layer]
+                layer.points = layer.points.sub(this.cost(layer.buyables[this.id]))
+                layer.buyables[this.id] = layer.buyables[this.id].add(1)
             },
             unlocked() { return hasMilestone("m", 1) },
             style: { 'height': '222px' },
@@ -122,20 +123,21 @@ addLayer("m", {
             effect(x) {
                 if (!x || x.lte(0.0)) return new Decimal(0)
                 let effect = x.times(10000).times(player.m.points.div(100.0).add(1))
-                if (hasUpgrade("b", 54)) effect = effect.times(player.b.points)
+                if (hasUpgrade("b", 54)) effect = effect.times(upgradeEffect("b", 54))
                 return effect
             },
-            display(x) {
+            display() {
                 const data = tmp[this.layer].buyables[this.id]
                 return "Mana Channels improve final mana cap.\n\
                 Cost: " + format(data.cost) + " droplets of mana\n\
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
                 Currently: +" + format(data.effect) + " mana cap.\n"
             },
-            canAfford() { return player.d.points.gte(this.cost(player[this.layer].buyables[this.id])) },
+            canAfford() { return player[this.layer].points.gte(this.cost(player[this.layer].buyables[this.id])) },
             buy() {
-                player.d.points = player.d.points.sub(this.cost(player[this.layer].buyables[this.id]))
-                player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].add(1)
+                const layer = player[this.layer]
+                layer.points = layer.points.sub(this.cost(layer.buyables[this.id]))
+                layer.buyables[this.id] = layer.buyables[this.id].add(1)
             },
             unlocked() { return hasMilestone("m", 1) },
             style: { 'height': '222px' },
@@ -154,17 +156,18 @@ addLayer("m", {
                 let effect = player.m.points.div(100.0).add(1).pow(x)
                 return effect
             },
-            display(x) {
+            display() {
                 const data = tmp[this.layer].buyables[this.id]
                 return "Mana Velocity improves droplet gain.\n\
                 Cost: " + format(data.cost) + " droplets of mana\n\
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
                 Currently: " + format(data.effect) + "x droplet gain.\n"
             },
-            canAfford() { return player.d.points.gte(this.cost(player[this.layer].buyables[this.id])) },
+            canAfford() { return player[this.layer].points.gte(this.cost(player[this.layer].buyables[this.id])) },
             buy() {
-                player.d.points = player.d.points.sub(this.cost(player[this.layer].buyables[this.id]))
-                player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].add(1)
+                const layer = player[this.layer]
+                layer.points = layer.points.sub(this.cost(layer.buyables[this.id]))
+                layer.buyables[this.id] = layer.buyables[this.id].add(1)
             },
             unlocked() { return hasMilestone("m", 4) },
             style: { 'height': '222px' },

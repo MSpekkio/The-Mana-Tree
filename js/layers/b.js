@@ -98,14 +98,17 @@ addLayer("b", {
         },
         12: {
             title: "Weight Training",
-            description: "Increase life force gain by ★s.",
+            description: "Increase life force gain by body ★s.",
             cost() { return new Decimal(50) },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
             effect() {
                 let effectivepoints = player[this.layer].points
-                if (hasUpgrade("b", 51)) effectivepoints = effectivepoints.times(2)
+                let effectiveMult = new Decimal(1.00)
+                if (hasUpgrade("b", 51)) effectiveMult = effectiveMult.add(upgradeEffect("b", 51))
+                if (hasUpgrade("qiocean", 32)) effectiveMult = effectiveMult.add(upgradeEffect("qiocean", 32))
+                effectivepoints = effectivepoints.times(effectiveMult)
 
                 let effect = player.c.points.add(effectivepoints).add(player.m.points)
                 return effect
@@ -151,7 +154,10 @@ addLayer("b", {
             currencyLayer: "b",
             effect() {
                 let effectivepoints = player[this.layer].points
-                if (hasUpgrade("b", 51)) effectivepoints = effectivepoints.times(2)
+                let effectiveMult = new Decimal(1.00)
+                if (hasUpgrade("b", 51)) effectiveMult = effectiveMult.add(upgradeEffect("b", 51))
+                if (hasUpgrade("qiocean", 32)) effectiveMult = effectiveMult.add(upgradeEffect("qiocean", 32))
+                effectivepoints = effectivepoints.times(effectiveMult)
 
                 let effect = new Decimal(0.03).times(effectivepoints).add(1)
                 return softcap(effect, new Decimal(2.5), 0.3)
@@ -193,7 +199,10 @@ addLayer("b", {
             currencyLayer: "b",
             effect() {
                 let effectivepoints = player[this.layer].points
-                if (hasUpgrade("b", 51)) effectivepoints = effectivepoints.times(2)
+                let effectiveMult = new Decimal(1.00)
+                if (hasUpgrade("b", 51)) effectiveMult = effectiveMult.add(upgradeEffect("b", 51))
+                if (hasUpgrade("qiocean", 32)) effectiveMult = effectiveMult.add(upgradeEffect("qiocean", 32))
+                effectivepoints = effectivepoints.times(effectiveMult)
 
                 let effect = new Decimal(0.01).times(effectivepoints).add(1)
                 return softcap(effect, new Decimal(2.5), 0.3)
@@ -235,7 +244,10 @@ addLayer("b", {
             currencyLayer: "b",
             effect() {
                 let effectivepoints = player[this.layer].points
-                if (hasUpgrade("b", 51)) effectivepoints = effectivepoints.times(2)
+                let effectiveMult = new Decimal(1.00)
+                if (hasUpgrade("b", 51)) effectiveMult = effectiveMult.add(upgradeEffect("b", 51))
+                if (hasUpgrade("qiocean", 32)) effectiveMult = effectiveMult.add(upgradeEffect("qiocean", 32))
+                effectivepoints = effectivepoints.times(effectiveMult)
 
                 let effect = new Decimal(0.03).times(effectivepoints).add(1)
                 return softcap(effect, new Decimal(2.5), 0.3)
@@ -271,13 +283,13 @@ addLayer("b", {
         },
         51: {
             title: "Synthesis",
-            description: "Double effective body ★'s for other upgrades.",
+            description: "Effective body ★'s for other upgrades is increased by +100%.",
             cost() { return new Decimal(500000) },
             currencyDisplayName: "life force",
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
             effect() {
-                let effect = new Decimal(2.0)
+                let effect = new Decimal(1.0)
                 return effect
             },
             unlocked() { return hasUpgrade("b", 23) && hasUpgrade("b", 33) && hasUpgrade("b", 43) },
@@ -395,7 +407,13 @@ addLayer("b", {
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
             effect() {
-                return player.b.points
+                let effectivepoints = player[this.layer].points
+                let effectiveMult = new Decimal(1.00)
+                if (hasUpgrade("b", 51)) effectiveMult = effectiveMult.add(upgradeEffect("b", 51))
+                if (hasUpgrade("qiocean", 32)) effectiveMult = effectiveMult.add(upgradeEffect("qiocean", 32))
+                effectivepoints = effectivepoints.times(effectiveMult)
+
+                return effectivepoints.div(2)
             },
             effectDisplay() { return format(this.effect()) + "x" },
             unlocked() { return hasMilestone("m", 2) },
@@ -408,7 +426,13 @@ addLayer("b", {
             currencyInternalName: "lifeForce",
             currencyLayer: "b",
             effect() {
-                return player.b.points
+                let effectivepoints = player[this.layer].points
+                let effectiveMult = new Decimal(1.00)
+                if (hasUpgrade("b", 51)) effectiveMult = effectiveMult.add(upgradeEffect("b", 51))
+                if (hasUpgrade("qiocean", 32)) effectiveMult = effectiveMult.add(upgradeEffect("qiocean", 32))
+                effectivepoints = effectivepoints.times(effectiveMult)
+
+                return effectivepoints.div(2)
             },
             effectDisplay() { return format(this.effect()) + "x" },
             unlocked() { return hasMilestone("m", 2) },

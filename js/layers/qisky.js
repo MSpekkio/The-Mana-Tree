@@ -7,6 +7,7 @@ addLayer("qisky", {
             unlocked: false,
             unlockOrder: 0,
             points: new Decimal(0),
+            best: new Decimal(0),
             acceleration: new Decimal(0),
             speed: new Decimal(0),
             resistance: new Decimal(0),
@@ -19,7 +20,7 @@ addLayer("qisky", {
         if (player.qisky.unlockOrder && player.qisky.unlockOrder >= 2) req = req.times(7000)
         return req
     },
-    layerShown(){ return hasUpgrade("c", 11) || player.a.achievements.includes("25") },
+    layerShown() { return hasUpgrade("c", 11) || player.a.achievements.includes("25") },
     resource: "Sky Qi",
     baseResource: "droplets of mana",
     baseAmount() { return player.d.points },
@@ -44,21 +45,23 @@ addLayer("qisky", {
         doLayerReset(this.layer, resettingLayer)
     },
     effectDescription() {
-        return "and your winds are moving at speed of " + format(player.qisky.speed) + " m/s (" + format(player.qisky.acceleration) + " m/s² with " + format(player.qisky.resistance.times(100)) + "% resistance). \n"+
-                "This increases your mana cap by " + format(this.effect()) + "x"
+        return "and your winds are moving at speed of " + format(player.qisky.speed) + " m/s (" + format(player.qisky.acceleration) + " m/s² with " + format(player.qisky.resistance.times(100)) + "% resistance). \n" +
+            "This increases your mana cap by " + format(this.effect()) + "x"
     },
     effect() {
         let effect = new Decimal(1.0)
         if (player[this.layer].speed.gt(0)) {
-            effect = effect.add(player[this.layer].speed.log(1.3))
+            effect = effect.add(player[this.layer].speed.log(2.0))
         }
 
-        return softcap(effect, new Decimal(15), 0.1)
+        return softcap(effect, new Decimal(25), 0.1)
     },
     update(diff) { // Called every tick, to update the layer
-        let accel = new Decimal(player[this.layer].points).times(9.8876)
+        let accel = new Decimal(player[this.layer].best).times(9.8876)
+        accel = accel.times(buyableEffect(this.layer, 12))
 
         let resist = new Decimal(0.40)
+        resist = resist.times(buyableEffect(this.layer, 11))
 
         let resistMult = resist.negate().add(1)
         let speed = player[this.layer].speed.add(accel).times(resistMult)
@@ -69,13 +72,70 @@ addLayer("qisky", {
         player[this.layer].speed = speed
     },
     buyables: {
-        
+        11: {
+            title: "Wind Resistance",
+            cost(x) {
+                let base = new Decimal(1.71)
+
+                return base.pow(x).floor()
+            },
+            effect(x) {
+                if (!x || x.lte(0.0)) return new Decimal(1.00)
+                let effect = new Decimal(0.915).pow(x)
+                return effect
+            },
+            display() {
+                const data = tmp[this.layer].buyables[this.id]
+                return "Your Sky Qi become sharper reducing Wind Resistance.\n\
+                Cost: " + format(data.cost) + " Sky Qi\n\
+                Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
+                Currently: +" + format(data.effect.times(100)) + "%.\n"
+            },
+            canAfford() { return player[this.layer].points.gte(this.cost(player[this.layer].buyables[this.id])) },
+            buy() {
+                const layer = player[this.layer]
+                layer.points = layer.points.sub(this.cost(layer.buyables[this.id]))
+                layer.buyables[this.id] = layer.buyables[this.id].add(1)
+            },
+            unlocked() { return true },
+            style: { 'height': '222px' },
+            purchaseLimit: new Decimal(20),
+        },
+        12: {
+            title: "Afterburner",
+            cost(x) {
+                let base = new Decimal(1.71)
+
+                return base.pow(x).floor()
+            },
+            effect(x) {
+                if (!x || x.lte(0.0)) return new Decimal(1.00)
+                let effect = new Decimal(1.07).pow(x)
+                return effect
+            },
+            display() {
+                const data = tmp[this.layer].buyables[this.id]
+                return "Burn your Sky Qi to gain additional acceleration.\n\
+                Cost: " + format(data.cost) + " Sky Qi\n\
+                Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
+                Currently: +" + format(data.effect.times(100)) + "%.\n"
+            },
+            canAfford() { return player[this.layer].points.gte(this.cost(player[this.layer].buyables[this.id])) },
+            buy() {
+                const layer = player[this.layer]
+                layer.points = layer.points.sub(this.cost(layer.buyables[this.id]))
+                layer.buyables[this.id] = layer.buyables[this.id].add(1)
+            },
+            unlocked() { return true },
+            style: { 'height': '222px' },
+            purchaseLimit: new Decimal(20),
+        },
     },
     upgrades: {
         11: {
             title: "➡️➡️➡️",
             description: "Sky effect increases mana gain at a reduced rate",
-            cost: new Decimal(5),
+            cost: new Decimal(2),
             unlocked() { return true },
             effect() {
                 return tmp.qisky.effect.ln()
@@ -83,6 +143,18 @@ addLayer("qisky", {
             effectDisplay() {
                 return format(this.effect()) + "x"
             },
+        },
+        12: {
+            title: "➡️↗️⬆️",
+            description: "nothing",
+            cost: new Decimal(10),
+            unlocked() { return true },
+        },
+        13: {
+            title: "⬆️⬇️↘️➡️",
+            description: "nothing x 2",
+            cost: new Decimal(25),
+            unlocked() { return true },
         },
     },
 })

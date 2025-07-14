@@ -16,7 +16,7 @@ addLayer("qiearth", {
         if (player.qiearth.unlockOrder && player.qiearth.unlockOrder >= 2) req = req.times(7000)
         return req
     },
-    layerShown(){ return hasUpgrade("c", 11) || player.a.achievements.includes("25") },
+    layerShown() { return hasUpgrade("c", 11) || player.a.achievements.includes("25") },
     resource: "Earth Qi",
     baseResource: "droplets of mana",
     baseAmount() { return player.d.points },
@@ -39,9 +39,9 @@ addLayer("qiearth", {
         doLayerReset(this.layer, resettingLayer)
     },
     buyables: {
-        
+
     },
     upgrades: {
-       
+
     },
 })

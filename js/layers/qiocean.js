@@ -19,7 +19,7 @@ addLayer("qiocean", {
         if (player.qiocean.unlockOrder && player.qiocean.unlockOrder >= 2) req = req.times(7000)
         return req
     },
-    layerShown(){ return hasUpgrade("c", 11) || player.a.achievements.includes("25") },
+    layerShown() { return hasUpgrade("c", 11) || player.a.achievements.includes("25") },
     resource: "Ocean Qi",
     baseResource: "droplets of mana",
     baseAmount() { return player.d.points },
@@ -27,7 +27,6 @@ addLayer("qiocean", {
     exponent: 0.5,
     gainMult() { // Calculate the multiplier for main currency from bonuses
         let mult = new Decimal(1)
-        if (hasUpgrade("qiocean", 31)) mult = mult.times(upgradeEffect("qiocean", 31))
 
         return mult
     },
@@ -74,20 +73,21 @@ addLayer("qiocean", {
             },
             effect(x) {
                 if (!x || x.lte(0.0)) return new Decimal(0)
-                let effect = x.add(1).pow(3)
+                let effect = x.pow(3).add(1)
                 return effect
             },
-            display(x) {
-                let data = tmp[this.layer].buyables[this.id]
+            display() {
+                const data = tmp[this.layer].buyables[this.id]
                 return "Explore the depths of your Qi Ocean.\n\
                 Cost: " + format(data.cost) + " Ocean Qi\n\
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
                 Currently: +" + format(data.effect) + " explore power.\n"
             },
-            canAfford() { return player.qiocean.points.gte(this.cost(player[this.layer].buyables[this.id])) },
+            canAfford() { return player[this.layer].points.gte(this.cost(player[this.layer].buyables[this.id])) },
             buy() {
-                player.qiocean.points = player.qiocean.points.sub(this.cost(player[this.layer].buyables[this.id]))
-                player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].add(1)
+                const layer = player[this.layer]
+                layer.points = layer.points.sub(this.cost(layer.buyables[this.id]))
+                layer.buyables[this.id] = layer.buyables[this.id].add(1)
             },
             unlocked() { return true },
             style: { 'height': '222px' },
@@ -98,7 +98,7 @@ addLayer("qiocean", {
         11: {
             title: "Plankton",
             description: "Increase life force gain by fathoms explored",
-            cost: new Decimal(3),
+            cost: new Decimal(2),
             unlocked() { return true },
             effect() {
                 return softcap(player.qiocean.explored.add(1).ln().times("1.3e8"), new Decimal(1e9), 0.5)
@@ -108,9 +108,9 @@ addLayer("qiocean", {
             },
         },
         21: {
-            title: "Coral",
+            title: "Fish",
             description: "Increase droplet gain by fathoms explored",
-            cost: new Decimal(5),
+            cost: new Decimal(4),
             unlocked() { return true },
             effect() {
                 return softcap(player.qiocean.explored.add(1).log10().times(136.5).add(16.49), new Decimal(250), 0.5)
@@ -120,21 +120,9 @@ addLayer("qiocean", {
             },
         },
         31: {
-            title: "Fish",
-            description: "Increase Ocean Qi by droplets of mana",
-            cost: new Decimal(25),
-            unlocked() { return true },
-            effect() {
-                return softcap(player.d.points.add(1).log10().times(0.13).add(1.00), new Decimal(5.0), 0.5)
-            },
-            effectDisplay() {
-                return format(this.effect()) + "x"
-            },
-        },
-        41: {
             title: "Man",
             description: "Increase droplet gain by Ocean Qi",
-            cost: new Decimal(100),
+            cost: new Decimal(30),
             unlocked() { return true },
             effect() {
                 return softcap(player.qiocean.points.add(1).log10().times(0.348).add(2.00), new Decimal(5.0), 0.5)
@@ -145,7 +133,7 @@ addLayer("qiocean", {
         },
         12: {
             title: "Waves",
-            description: "Increase droplet gain per second by +10%",
+            description: "Increase droplet gain per second by +15%",
             cost: new Decimal(250),
             unlocked() { return player.a.achievements.includes("26") },
         },
@@ -153,7 +141,7 @@ addLayer("qiocean", {
             title: "Bubbles",
             description: "Sky's wind speed boosts explore power",
             cost: new Decimal(1500),
-            unlocked() { return true },
+            unlocked() { return player.a.achievements.includes("26") },
             effect() {
                 let effect = new Decimal(1.0)
                 if (player.qisky.speed.gt(0)) {
@@ -163,6 +151,16 @@ addLayer("qiocean", {
             },
             effectDisplay() {
                 return "^" + format(this.effect())
+            },
+        },
+        32: {
+            title: "Tsunami",
+            description: "Effective body ★'s for other upgrades is increased by +100%.",
+            cost: new Decimal(5000),
+            unlocked() { return player.a.achievements.includes("26") },
+            effect() {
+                let effect = new Decimal(1.0)
+                return effect
             },
         },
     },

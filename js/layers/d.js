@@ -33,7 +33,7 @@ addLayer("d", {
         if (hasUpgrade("d", 41)) mult = mult.times(upgradeEffect("d", 41))
         mult = mult.times(buyableEffect("m", 13))
         if (hasUpgrade("qiocean", 21)) mult = mult.times(upgradeEffect("qiocean", 21))
-        if (hasUpgrade("qiocean", 41)) mult = mult.times(upgradeEffect("qiocean", 41))
+        if (hasUpgrade("qiocean", 31)) mult = mult.times(upgradeEffect("qiocean", 31))
 
         return mult
     },
@@ -55,7 +55,7 @@ addLayer("d", {
     doReset(resettingLayer) { // What happens when you reset this layer 
         if (layers[resettingLayer].row <= this.row) return;
 
-        let keep = [];
+        const keep = [];
         if (hasMilestone("m", 3)) {
             keep.push("upgrades");
         }
@@ -70,7 +70,7 @@ addLayer("d", {
     passiveGeneration() {
         let gen = 0.00 // no passive generation
         if (hasMilestone("m", 0)) gen = gen + 0.10 // 10% of droplets per second
-        if (hasUpgrade("qiocean", 12)) gen = gen + 0.10 // 10% of droplets per second
+        if (hasUpgrade("qiocean", 12)) gen = gen + 0.15
         return gen
     },
     upgrades: {
@@ -135,6 +135,7 @@ addLayer("d", {
             description: "Refine your breathing to increase mana gain.",
             cost: new Decimal(50),
             unlocked() { return hasUpgrade("t", "11") },
+            //Boost upgrade 11 effect
         },
         22: {
             title: "Efficient Breathing II",
@@ -178,7 +179,7 @@ addLayer("d", {
                 if (hasUpgrade("b", "32")) base = base.add(upgradeEffect("b", 32))
 
                 let effect = player[this.layer].points.add(1).log10().times(base).add(1)
-                return softcap(effect, new Decimal(5.0), new Decimal(0.2))
+                return softcap(softcap(effect, new Decimal(5.0), new Decimal(0.2)), new Decimal(6.0), new Decimal(0.2))
             },
             effectDisplay() { return format(this.effect()) + "x" }
         },
@@ -194,7 +195,7 @@ addLayer("d", {
                 if (hasUpgrade("b", "33")) cap = cap.times(2)
 
                 let effect = player[this.layer].points.add(1).log10().times(base).add(1)
-                return softcap(effect, cap, new Decimal(0.2))
+                return softcap(softcap(effect, cap, new Decimal(0.2)), new Decimal(15.0), new Decimal(0.2))
             },
             effectDisplay() { return "+" + format(this.effect()) }
         },
