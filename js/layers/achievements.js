@@ -110,8 +110,13 @@ addLayer("a", {
         },
         28: {
             name: "Firmament",
-            done() { return false },
+            done() { return player.qiearth.points.gte(1) },
             tooltip: "Your core hardens.",
+        },
+        29: {
+            name: "Establishment",
+            done() { return player.a.achievements.every(v => ["26","27","28"].includes(v)) },
+            tooltip: "Establish your Qi base.",
         },
     },
     clickables: {

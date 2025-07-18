@@ -26,6 +26,9 @@ addLayer("t", {
     },
     resetsNothing: true,
     branches: ["d"], // This layer is a branch of the drops layer
+    update(diff) {
+        player.t.points = player.t.points.add(buyableEffect("qiearth", 11).times(diff))
+    },
     clickables:
     {
         11: {
@@ -39,7 +42,6 @@ addLayer("t", {
                 if (player.points.gte(cost)) {
                     player.points = player.points.sub(cost)
                     player[this.layer].points = player[this.layer].points.add(this.amount)
-                    player[this.layer].total = player[this.layer].points.add(this.amount)
                 }
             },
         },
@@ -55,7 +57,6 @@ addLayer("t", {
                 if (player.points.gte(cost)) {
                     player.points = player.points.sub(cost)
                     player[this.layer].points = player[this.layer].points.add(this.amount)
-                    player[this.layer].total = player[this.layer].points.add(this.amount)
                 }
             },
         },
@@ -71,7 +72,6 @@ addLayer("t", {
                 if (player.points.gte(cost)) {
                     player.points = player.points.sub(cost)
                     player[this.layer].points = player[this.layer].points.add(this.amount)
-                    player[this.layer].total = player[this.layer].points.add(this.amount)
                 }
             },
         },
@@ -87,7 +87,6 @@ addLayer("t", {
                 if (player.points.gte(cost)) {
                     player.points = player.points.sub(cost)
                     player[this.layer].points = player[this.layer].points.add(this.amount)
-                    player[this.layer].total = player[this.layer].points.add(this.amount)
                 }
             },
         },
@@ -103,7 +102,6 @@ addLayer("t", {
                 if (player.points.gte(cost)) {
                     player.points = player.points.sub(cost)
                     player[this.layer].points = player[this.layer].points.add(this.amount)
-                    player[this.layer].total = player[this.layer].points.add(this.amount)
                 }
             },
         },
