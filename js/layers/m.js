@@ -102,10 +102,11 @@ addLayer("m", {
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
                 Currently: +" + format(data.effect) + " base mana gain and cap.\n"
             },
-            canAfford() { return player[this.layer].points.gte(this.cost(player[this.layer].buyables[this.id])) },
+            canAfford() { return player.d.points.gte(this.cost(player[this.layer].buyables[this.id])) },
             buy() {
+                const droplets = player.d
                 const layer = player[this.layer]
-                layer.points = layer.points.sub(this.cost(layer.buyables[this.id]))
+                droplets.points = droplets.points.sub(this.cost(layer.buyables[this.id]))
                 layer.buyables[this.id] = layer.buyables[this.id].add(1)
             },
             unlocked() { return hasMilestone("m", 1) },
@@ -133,10 +134,11 @@ addLayer("m", {
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
                 Currently: +" + format(data.effect) + " mana cap.\n"
             },
-            canAfford() { return player[this.layer].points.gte(this.cost(player[this.layer].buyables[this.id])) },
+            canAfford() { return player.d.points.gte(this.cost(player[this.layer].buyables[this.id])) },
             buy() {
+                const droplets = player.d
                 const layer = player[this.layer]
-                layer.points = layer.points.sub(this.cost(layer.buyables[this.id]))
+                droplets.points = droplets.points.sub(this.cost(layer.buyables[this.id]))
                 layer.buyables[this.id] = layer.buyables[this.id].add(1)
             },
             unlocked() { return hasMilestone("m", 1) },
@@ -163,10 +165,11 @@ addLayer("m", {
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
                 Currently: " + format(data.effect) + "x droplet gain.\n"
             },
-            canAfford() { return player[this.layer].points.gte(this.cost(player[this.layer].buyables[this.id])) },
+            canAfford() { return player.d.points.gte(this.cost(player[this.layer].buyables[this.id])) },
             buy() {
+                const droplets = player.d
                 const layer = player[this.layer]
-                layer.points = layer.points.sub(this.cost(layer.buyables[this.id]))
+                droplets.points = droplets.points.sub(this.cost(layer.buyables[this.id]))
                 layer.buyables[this.id] = layer.buyables[this.id].add(1)
             },
             unlocked() { return hasMilestone("m", 4) },

@@ -2,6 +2,10 @@ function hasUpgrade(layer, id) {
 	return ((player[layer].upgrades.includes(toNumber(id)) || player[layer].upgrades.includes(id.toString())) && !tmp[layer].deactivated)
 }
 
+function hasBuyable(layer, id) {
+	return ((player[layer].buyables[toNumber(id)].gt(0) || player[layer].buyables[id.toString()].gt(0)) && !tmp[layer].deactivated)
+}
+
 function hasMilestone(layer, id) {
 	return ((player[layer].milestones.includes(toNumber(id)) || player[layer].milestones.includes(id.toString())) && !tmp[layer].deactivated)
 }

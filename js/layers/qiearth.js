@@ -22,7 +22,8 @@ addLayer("qiearth", {
     baseResource: "droplets of mana",
     baseAmount() { return player.d.points },
     type: "static",
-    exponent: 0.5,
+    exponent: 0.50,
+    base: 5.5,
     gainMult() { // Calculate the multiplier for main currency from bonuses
         let mult = new Decimal(1)
 
@@ -34,9 +35,9 @@ addLayer("qiearth", {
     doReset(resettingLayer) { // What happens when you reset this layer)
         if (layers[resettingLayer].row > this.row) {
             player[this.layer].pointsSpent = new Decimal(0)
-            player[this.layer].buyables["11"] = new Decimal(0)
-            player[this.layer].buyables["12"] = new Decimal(0)
-            player[this.layer].buyables["21"] = new Decimal(0)
+            Object.keys(player[this.layer].buyables).forEach(id => {
+                player[this.layer].buyables[id] = new Decimal(0)
+            })
         }
         if (layers[resettingLayer].row <= this.row) return
 
@@ -51,7 +52,7 @@ addLayer("qiearth", {
                 "blank",
                 ["display-text", function () {
                     const free = player.qiearth.points.sub(player.qiearth.pointsSpent)
-                    return "You have " + format(free, 0) + " free Foundation Point" + (free.gt(1) ? "s" : "") + "."
+                    return "You have " + format(free, 0) + " free Foundation Point" + (free.neq(1) ? "s" : "") + "."
                 }],
                 "blank",
                 "buyables",
@@ -62,23 +63,22 @@ addLayer("qiearth", {
         showRespec: true,
         respec() { // Optional, reset things and give back your currency. Having this function makes a respec button appear
             player[this.layer].pointsSpent = new Decimal(0)
-            player[this.layer].buyables["11"] = new Decimal(0)
-            player[this.layer].buyables["12"] = new Decimal(0)
-            player[this.layer].buyables["21"] = new Decimal(0)
+            Object.keys(player[this.layer].buyables).forEach(id => {
+                player[this.layer].buyables[id] = new Decimal(0)
+            })
             doReset(this.layer, true) // Force a reset
         },
         11: {
-            title: "Earth Spirit",
-            cost(x) { return new Decimal(1) },
+            title: "Footing",
+            cost(x) { return new Decimal(2) },
             effect(x) {
-                if (!x || x.lte(0.0)) return new Decimal(0)
-                return player[this.layer].points.times(27).sqrt()
+                return new Decimal(13.5)
             },
             display() {
                 const data = tmp[this.layer].buyables[this.id]
-                return "Produce Spirit Stones based on Earth Qi.\n\
+                return "Increase droplet gain.\n\
                 Cost: " + format(data.cost) + " Foundation Point\n\
-                Currently: +" + format(data.effect) + "/s.\n"
+                Currently: " + format(data.effect) + "x.\n"
             },
             canAfford() {
                 const free = player[this.layer].points.sub(player[this.layer].pointsSpent)
@@ -94,18 +94,16 @@ addLayer("qiearth", {
             style: { 'height': '122px', 'width': '122px' },
         },
         12: {
-            title: "Earth 2",
-            cost(x) { return new Decimal(1) },
+            title: "Base",
+            cost(x) { return new Decimal(2) },
             effect(x) {
-                if (!x || x.lte(0.0)) return new Decimal(1.00)
-                let effect = new Decimal(0.915).pow(x)
-                return effect
+                return new Decimal(1.43)
             },
             display() {
                 const data = tmp[this.layer].buyables[this.id]
-                return "TODO.\n\
+                return "Boost Core effect.\n\
                 Cost: " + format(data.cost) + " Foundation Point\n\
-                Currently: +" + format(data.effect.times(100)) + "%.\n"
+                Currently: ^" + format(data.effect) + ".\n"
             },
             canAfford() {
                 const free = player[this.layer].points.sub(player[this.layer].pointsSpent)

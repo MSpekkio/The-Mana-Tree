@@ -34,6 +34,8 @@ addLayer("d", {
         mult = mult.times(buyableEffect("m", 13))
         if (hasUpgrade("qiocean", 21)) mult = mult.times(upgradeEffect("qiocean", 21))
         if (hasUpgrade("qiocean", 31)) mult = mult.times(upgradeEffect("qiocean", 31))
+        
+        if (hasBuyable("qiearth", 11)) mult = mult.times(buyableEffect("qiearth", 11))
 
         return mult
     },

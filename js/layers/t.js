@@ -27,7 +27,7 @@ addLayer("t", {
     resetsNothing: true,
     branches: ["d"], // This layer is a branch of the drops layer
     update(diff) {
-        player.t.points = player.t.points.add(buyableEffect("qiearth", 11).times(diff))
+        //player.t.points = player.t.points.add(buyableEffect("qiearth", 11).times(diff))
     },
     clickables:
     {

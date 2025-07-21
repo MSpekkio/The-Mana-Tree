@@ -18,13 +18,13 @@ addLayer("c", {
         if (player.b.points.gte(1)) {
             effect = effect.add(tmp.b.effect.coreEffect)
         }
-        if (hasUpgrade("b", 55)) {
-            effect = effect.add(upgradeEffect("b", 55))
-        }
-        if (player.qiocean.unlocked) {
-            effect = effect.times(tmp.qiocean.effect)
-        }
-        return softcap(effect, new Decimal(5000), 0.1)
+        if (hasUpgrade("b", 55)) effect = effect.add(upgradeEffect("b", 55))
+        
+        if (player.qiocean.unlocked) effect = effect.times(tmp.qiocean.effect)
+
+        if (hasBuyable("qiearth", 12)) effect = effect.pow(buyableEffect("qiearth", 12))
+
+        return effect
     },
     effectDescription() { return "which multiplies mana gain and cap by " + format(this.effect()) },
     resource: "core ★", // Name of prestige currency
