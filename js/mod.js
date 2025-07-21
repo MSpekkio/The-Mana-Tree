@@ -74,6 +74,8 @@ function getPointGen() {
     if (hasUpgrade("d", 41)) gain = gain.times(upgradeEffect("d", 41))
     if (hasUpgrade("qisky", 11)) gain = gain.times(upgradeEffect("qisky", 11))
 
+    player.baseGain = gain
+
     let cap = new Decimal(100)
     cap = cap.add(buyableEffect("m", 11)) // base cap
     if (hasUpgrade("b", 24) && hasUpgrade("d", 11)) cap = cap.add(upgradeEffect("b", 24))
@@ -109,13 +111,14 @@ function getPointGen() {
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
 function addedPlayerData() {
     return {
+        baseGain: new Decimal(1),
         manaCap: new Decimal(100), // Default mana cap
     }
 }
 
 // Display extra things at the top of the page
 var displayThings = [
-    () => `Mana gain is reduced above ${format(player.manaCap)} mana`
+    () => `Your Mana gain of ${format(player.baseGain)} is reduced above ${format(player.manaCap)} total mana`
 ]
 
 // Determines when the game "ends"

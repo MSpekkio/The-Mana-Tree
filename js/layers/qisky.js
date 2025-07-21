@@ -16,8 +16,8 @@ addLayer("qisky", {
     color: "#bfd9d8",
     requires() {
         let req = new Decimal("1e13")
-        if (player.qisky.unlockOrder && player.qisky.unlockOrder >= 1) req = req.times(5500)
-        if (player.qisky.unlockOrder && player.qisky.unlockOrder >= 2) req = req.times(7000)
+        if (player.qisky.unlockOrder && player.qisky.unlockOrder >= 1) req = req.times(55000)
+        if (player.qisky.unlockOrder && player.qisky.unlockOrder >= 2) req = req.times(70000)
         return req
     },
     layerShown() { return hasUpgrade("c", 11) || player.a.achievements.includes("25") },
@@ -51,10 +51,10 @@ addLayer("qisky", {
     effect() {
         let effect = new Decimal(1.0)
         if (player[this.layer].speed.gt(0)) {
-            effect = effect.add(player[this.layer].speed.log(2.0))
+            effect = effect.add(player[this.layer].speed.log(1.3).add(50))
         }
 
-        return softcap(effect, new Decimal(25), 0.1)
+        return softcap(effect, new Decimal(500), 0.1)
     },
     update(diff) { // Called every tick, to update the layer
         let accel = new Decimal(player[this.layer].best).times(9.8876)
@@ -86,10 +86,10 @@ addLayer("qisky", {
             },
             display() {
                 const data = tmp[this.layer].buyables[this.id]
-                return "Your Sky Qi become sharper reducing Wind Resistance.\n\
+                return "Focus your Sky Qi to become sharper reducing Wind Resistance.\n\
                 Cost: " + format(data.cost) + " Sky Qi\n\
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
-                Currently: +" + format(data.effect.times(100)) + "%.\n"
+                Currently: x" + format(data.effect.times(100)) + "%.\n"
             },
             canAfford() { return player[this.layer].points.gte(this.cost(player[this.layer].buyables[this.id])) },
             buy() {
@@ -110,7 +110,7 @@ addLayer("qisky", {
             },
             effect(x) {
                 if (!x || x.lte(0.0)) return new Decimal(1.00)
-                let effect = new Decimal(1.07).pow(x)
+                let effect = new Decimal(1.09).pow(x)
                 return effect
             },
             display() {
@@ -118,7 +118,7 @@ addLayer("qisky", {
                 return "Burn your Sky Qi to gain additional acceleration.\n\
                 Cost: " + format(data.cost) + " Sky Qi\n\
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
-                Currently: +" + format(data.effect.times(100)) + "%.\n"
+                Currently: x" + format(data.effect.times(100)) + "%.\n"
             },
             canAfford() { return player[this.layer].points.gte(this.cost(player[this.layer].buyables[this.id])) },
             buy() {
@@ -138,7 +138,7 @@ addLayer("qisky", {
             cost: new Decimal(2),
             unlocked() { return true },
             effect() {
-                return tmp.qisky.effect.ln()
+                return tmp.qisky.effect.add(1).log(2)
             },
             effectDisplay() {
                 return format(this.effect()) + "x"
@@ -146,15 +146,27 @@ addLayer("qisky", {
         },
         12: {
             title: "➡️↗️⬆️",
-            description: "nothing",
+            description: "Wind speed increases 'Mana Velocity' effect",
             cost: new Decimal(10),
             unlocked() { return true },
+            effect() {
+                return player.qisky.speed.add(1).ln().times(1.869)
+            },
+            effectDisplay() {
+                return format(this.effect()) + "x"
+            },
         },
         13: {
             title: "⬆️⬇️↘️➡️",
-            description: "nothing x 2",
+            description: "'Cyrstalize Mana' effect is increased by Sky Effect",
             cost: new Decimal(25),
             unlocked() { return true },
+            effect() {
+                return tmp.qisky.effect
+            },
+            effectDisplay() {
+                return "+" + format(this.effect()) + ""
+            },
         },
     },
 })

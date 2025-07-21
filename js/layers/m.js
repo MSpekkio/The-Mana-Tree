@@ -92,7 +92,8 @@ addLayer("m", {
             effect(x) {
                 if (!x || x.lte(0.0)) return new Decimal(0)
                 let effect = x.add(1).pow(2).add(player.m.points)
-                if (hasUpgrade("b", 54)) effect = effect.times(upgradeEffect("b", 54))
+                if (hasUpgrade("b", 53)) effect = effect.times(upgradeEffect("b", 53))
+                if (hasUpgrade("qisky", 13)) effect = effect.times(upgradeEffect("qisky", 13))
                 return effect
             },
             display() {
@@ -125,6 +126,7 @@ addLayer("m", {
                 if (!x || x.lte(0.0)) return new Decimal(0)
                 let effect = x.times(10000).times(player.m.points.div(100.0).add(1))
                 if (hasUpgrade("b", 54)) effect = effect.times(upgradeEffect("b", 54))
+                
                 return effect
             },
             display() {
@@ -156,6 +158,7 @@ addLayer("m", {
             effect(x) {
                 if (!x || x.lte(0.0)) return new Decimal(1.0)
                 let effect = player.m.points.div(100.0).add(1).pow(x)
+                if (hasUpgrade("qisky", 12)) effect = effect.times(upgradeEffect("qisky", 12))
                 return effect
             },
             display() {

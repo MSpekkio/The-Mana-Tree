@@ -13,8 +13,8 @@ addLayer("qiearth", {
     color: "#32b828",
     requires() {
         let req = new Decimal("1e13")
-        if (player.qiearth.unlockOrder && player.qiearth.unlockOrder >= 1) req = req.times(5500)
-        if (player.qiearth.unlockOrder && player.qiearth.unlockOrder >= 2) req = req.times(7000)
+        if (player.qiearth.unlockOrder && player.qiearth.unlockOrder >= 1) req = req.times(55000)
+        if (player.qiearth.unlockOrder && player.qiearth.unlockOrder >= 2) req = req.times(70000)
         return req
     },
     layerShown() { return hasUpgrade("c", 11) || player.a.achievements.includes("25") },
@@ -118,8 +118,33 @@ addLayer("qiearth", {
             purchaseLimit: new Decimal(1),
             style: { 'height': '122px', 'width': '122px' },
         },
+        13: {
+            title: "Buttress",
+            cost(x) { return new Decimal(2) },
+            effect(x) {
+                return new Decimal(1.33)
+            },
+            display() {
+                const data = tmp[this.layer].buyables[this.id]
+                return "Boost 'Deep Breath' effect.\n\
+                Cost: " + format(data.cost) + " Foundation Point\n\
+                Currently: ^" + format(data.effect) + ".\n"
+            },
+            canAfford() {
+                const free = player[this.layer].points.sub(player[this.layer].pointsSpent)
+                return free.gte(this.cost(player[this.layer].buyables[this.id]))
+            },
+            buy() {
+                const layer = player[this.layer]
+                layer.pointsSpent = layer.pointsSpent.add(this.cost(layer.buyables[this.id]))
+                layer.buyables[this.id] = layer.buyables[this.id].add(1)
+            },
+            unlocked() { return true },
+            purchaseLimit: new Decimal(1),
+            style: { 'height': '122px', 'width': '122px' },
+        },
         21: {
-            title: "Earth 3",
+            title: "Earth 4",
             cost(x) { return new Decimal(2) },
             effect(x) {
                 if (!x || x.lte(0.0)) return new Decimal(1.00)
@@ -133,7 +158,36 @@ addLayer("qiearth", {
                 Currently: +" + format(data.effect.times(100)) + "%.\n"
             },
             canAfford() {
-                if (getBuyableAmount(this.layer, "11").eq(0) || getBuyableAmount(this.layer, "12").eq(0))
+                if (!hasBuyable(this.layer, "11") && !hasBuyable(this.layer, "12"))
+                    return false
+                const free = player[this.layer].points.sub(player[this.layer].pointsSpent)
+                return free.gte(this.cost(player[this.layer].buyables[this.id]))
+            },
+            buy() {
+                const layer = player[this.layer]
+                layer.pointsSpent = layer.pointsSpent.add(this.cost(layer.buyables[this.id]))
+                layer.buyables[this.id] = layer.buyables[this.id].add(1)
+            },
+            unlocked() { return true },
+            purchaseLimit: new Decimal(1),
+            style: { 'height': '122px', 'width': '122px' },
+        },
+        22: {
+            title: "Earth 5",
+            cost(x) { return new Decimal(2) },
+            effect(x) {
+                if (!x || x.lte(0.0)) return new Decimal(1.00)
+                let effect = new Decimal(0.915).pow(x)
+                return effect
+            },
+            display() {
+                const data = tmp[this.layer].buyables[this.id]
+                return "TODO.\n\
+                Cost: " + format(data.cost) + " Foundation Point\n\
+                Currently: +" + format(data.effect.times(100)) + "%.\n"
+            },
+            canAfford() {
+                if (!hasBuyable(this.layer, "12") && !hasBuyable(this.layer, "13"))
                     return false
                 const free = player[this.layer].points.sub(player[this.layer].pointsSpent)
                 return free.gte(this.cost(player[this.layer].buyables[this.id]))

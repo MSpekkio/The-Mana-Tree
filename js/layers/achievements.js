@@ -115,7 +115,7 @@ addLayer("a", {
         },
         29: {
             name: "Establishment",
-            done() { return player.a.achievements.every(v => ["26","27","28"].includes(v)) },
+            done() { return ["26", "27", "28"].every(v => player.a.achievements.includes(v)) },
             tooltip: "Establish your Qi base.",
         },
     },
