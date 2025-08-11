@@ -73,7 +73,7 @@ addLayer("qisky", {
     },
     buyables: {
         11: {
-            title: "Wind Resistance",
+            title: "Wind Slash",
             cost(x) {
                 let base = new Decimal(1.71)
 
@@ -81,15 +81,15 @@ addLayer("qisky", {
             },
             effect(x) {
                 if (!x || x.lte(0.0)) return new Decimal(1.00)
-                let effect = new Decimal(0.915).pow(x)
+                let effect = new Decimal(0.905).pow(x)
                 return effect
             },
             display() {
                 const data = tmp[this.layer].buyables[this.id]
                 return "Focus your Sky Qi to become sharper reducing Wind Resistance.\n\
-                Cost: " + format(data.cost) + " Sky Qi\n\
+                Cost: " + format(data.cost, 0) + " Sky Qi\n\
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
-                Currently: x" + format(data.effect.times(100)) + "%.\n"
+                Currently: " + format(data.effect.times(100)) + "%.\n"
             },
             canAfford() { return player[this.layer].points.gte(this.cost(player[this.layer].buyables[this.id])) },
             buy() {
@@ -102,7 +102,7 @@ addLayer("qisky", {
             purchaseLimit: new Decimal(20),
         },
         12: {
-            title: "Afterburner",
+            title: "Rising Sun",
             cost(x) {
                 let base = new Decimal(1.71)
 
@@ -110,15 +110,15 @@ addLayer("qisky", {
             },
             effect(x) {
                 if (!x || x.lte(0.0)) return new Decimal(1.00)
-                let effect = new Decimal(1.09).pow(x)
+                let effect = new Decimal(1.42).pow(x)
                 return effect
             },
             display() {
                 const data = tmp[this.layer].buyables[this.id]
                 return "Burn your Sky Qi to gain additional acceleration.\n\
-                Cost: " + format(data.cost) + " Sky Qi\n\
+                Cost: " + format(data.cost, 0) + " Sky Qi\n\
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
-                Currently: x" + format(data.effect.times(100)) + "%.\n"
+                Currently: " + format(data.effect) + "x.\n"
             },
             canAfford() { return player[this.layer].points.gte(this.cost(player[this.layer].buyables[this.id])) },
             buy() {
@@ -138,7 +138,7 @@ addLayer("qisky", {
             cost: new Decimal(2),
             unlocked() { return true },
             effect() {
-                return tmp.qisky.effect.add(1).log(2)
+                return tmp.qisky.effect.add(1).log(1.95)
             },
             effectDisplay() {
                 return format(this.effect()) + "x"
@@ -150,7 +150,7 @@ addLayer("qisky", {
             cost: new Decimal(10),
             unlocked() { return true },
             effect() {
-                return player.qisky.speed.add(1).ln().times(1.869)
+                return player.qisky.speed.add(1).ln().times(1.8995)
             },
             effectDisplay() {
                 return format(this.effect()) + "x"

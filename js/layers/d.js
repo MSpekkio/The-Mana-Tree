@@ -93,7 +93,7 @@ addLayer("d", {
                         + hasUpgrade(this.layer, "24")))
                 }
                 if (hasUpgrade("d", 34)) effect = effect.times(upgradeEffect("d", 34))
-                if (hasUpgrade("qiearth", 13)) effect = effect.pow(upgradeEffect("qiearth", 13))
+                if (hasBuyable("qiearth", 13)) effect = effect.pow(buyableEffect("qiearth", 13))
                 return effect
             },
             effectDisplay() { return "+" + format(this.effect()) },

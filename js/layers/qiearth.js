@@ -70,14 +70,18 @@ addLayer("qiearth", {
         },
         11: {
             title: "Footing",
-            cost(x) { return new Decimal(2) },
+            cost(x)
+            {
+                const factor = Object.values(player.qiearth.buyables).filter(d => d.gt(0)).length
+                return new Decimal(1).times(factor).add(1)
+            },
             effect(x) {
-                return new Decimal(13.5)
+                return new Decimal(15.5)
             },
             display() {
                 const data = tmp[this.layer].buyables[this.id]
                 return "Increase droplet gain.\n\
-                Cost: " + format(data.cost) + " Foundation Point\n\
+                Cost: " + format(data.cost, 0) + " Foundation Point\n\
                 Currently: " + format(data.effect) + "x.\n"
             },
             canAfford() {
@@ -95,14 +99,17 @@ addLayer("qiearth", {
         },
         12: {
             title: "Base",
-            cost(x) { return new Decimal(2) },
+            cost(x) {
+                const factor = Object.values(player.qiearth.buyables).filter(d => d.gt(0)).length
+                return new Decimal(1).times(factor).add(1)
+            },
             effect(x) {
-                return new Decimal(1.43)
+                return new Decimal(1.63)
             },
             display() {
                 const data = tmp[this.layer].buyables[this.id]
                 return "Boost Core effect.\n\
-                Cost: " + format(data.cost) + " Foundation Point\n\
+                Cost: " + format(data.cost, 0) + " Foundation Point\n\
                 Currently: ^" + format(data.effect) + ".\n"
             },
             canAfford() {
@@ -120,14 +127,17 @@ addLayer("qiearth", {
         },
         13: {
             title: "Buttress",
-            cost(x) { return new Decimal(2) },
+            cost(x) {
+                const factor = Object.values(player.qiearth.buyables).filter(d => d.gt(0)).length
+                return new Decimal(1).times(factor).add(1)
+            },
             effect(x) {
-                return new Decimal(1.33)
+                return new Decimal(2.5)
             },
             display() {
                 const data = tmp[this.layer].buyables[this.id]
                 return "Boost 'Deep Breath' effect.\n\
-                Cost: " + format(data.cost) + " Foundation Point\n\
+                Cost: " + format(data.cost, 0) + " Foundation Point\n\
                 Currently: ^" + format(data.effect) + ".\n"
             },
             canAfford() {
@@ -144,21 +154,24 @@ addLayer("qiearth", {
             style: { 'height': '122px', 'width': '122px' },
         },
         21: {
-            title: "Earth 4",
-            cost(x) { return new Decimal(2) },
+            title: "Ramp",
+            cost(x) {
+                const factor = Object.values(player.qiearth.buyables).filter(d => d.gt(0)).length
+                return new Decimal(2).times(factor).add(2)
+            },
             effect(x) {
                 if (!x || x.lte(0.0)) return new Decimal(1.00)
-                let effect = new Decimal(0.915).pow(x)
+                let effect = new Decimal(32)
                 return effect
             },
             display() {
                 const data = tmp[this.layer].buyables[this.id]
-                return "TODO.\n\
-                Cost: " + format(data.cost) + " Foundation Point\n\
+                return "Increase 'Mana Compression' effect by 32x.\n\
+                Cost: " + format(data.cost, 0) + " Foundation Point\n\
                 Currently: +" + format(data.effect.times(100)) + "%.\n"
             },
             canAfford() {
-                if (!hasBuyable(this.layer, "11") && !hasBuyable(this.layer, "12"))
+                if (!hasBuyable(this.layer, "11") || !hasBuyable(this.layer, "12"))
                     return false
                 const free = player[this.layer].points.sub(player[this.layer].pointsSpent)
                 return free.gte(this.cost(player[this.layer].buyables[this.id]))
@@ -174,7 +187,10 @@ addLayer("qiearth", {
         },
         22: {
             title: "Earth 5",
-            cost(x) { return new Decimal(2) },
+            cost(x) {
+                const factor = Object.values(player.qiearth.buyables).filter(d => d.gt(0)).length
+                return new Decimal(2).times(factor).add(2)
+            },
             effect(x) {
                 if (!x || x.lte(0.0)) return new Decimal(1.00)
                 let effect = new Decimal(0.915).pow(x)
@@ -183,11 +199,11 @@ addLayer("qiearth", {
             display() {
                 const data = tmp[this.layer].buyables[this.id]
                 return "TODO.\n\
-                Cost: " + format(data.cost) + " Foundation Point\n\
+                Cost: " + format(data.cost, 0) + " Foundation Point\n\
                 Currently: +" + format(data.effect.times(100)) + "%.\n"
             },
             canAfford() {
-                if (!hasBuyable(this.layer, "12") && !hasBuyable(this.layer, "13"))
+                if (!hasBuyable(this.layer, "12") || !hasBuyable(this.layer, "13"))
                     return false
                 const free = player[this.layer].points.sub(player[this.layer].pointsSpent)
                 return free.gte(this.cost(player[this.layer].buyables[this.id]))

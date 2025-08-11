@@ -79,7 +79,7 @@ addLayer("qiocean", {
             display() {
                 const data = tmp[this.layer].buyables[this.id]
                 return "Explore the depths of your Qi Ocean.\n\
-                Cost: " + format(data.cost) + " Ocean Qi\n\
+                Cost: " + format(data.cost, 0) + " Ocean Qi\n\
                 Amount: " + player[this.layer].buyables[this.id] + " of " + format(this.purchaseLimit) + "\n\
                 Currently: +" + format(data.effect) + " explore power.\n"
             },
